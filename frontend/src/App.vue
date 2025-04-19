@@ -1,4 +1,5 @@
 <template>
+  <pwa-install />
   <div id="app" class="min-h-screen flex flex-col">
     <Navbar />
     <main class="flex-grow container mx-auto px-4 py-8">

@@ -2,6 +2,39 @@ version: 1
 kind: pipeline
 spec:
   stages:
+    - name: lint
+      type: ci
+      spec:
+        steps:
+          - name: lint
+            type: run
+            spec:
+              container:
+                image: evertjstam/drone-helm3:0.16
+                pull: if-not-exists
+              envs:
+                CHART: /cycle-tracker
+                MODE: lint
+          - name: black
+            type: run
+            spec:
+              container:
+                image: ghcr.io/astral-sh/uv:python3.12-alpine
+                pull: if-not-exists
+              script: |-
+                uv sync
+                source .venv/bin/activate
+                black backend/app
+          - name: isort
+            type: run
+            spec:
+              container:
+                image: ghcr.io/astral-sh/uv:python3.12-alpine
+                pull: if-not-exists
+              script: |-
+                uv sync
+                source .venv/bin/activate
+                isort backend/app
     - name: build
       type: ci
       spec:
@@ -19,4 +52,52 @@ spec:
                 platform: linux/arm64
                 registry: harness.fromej.nl
                 repo: harness.fromej.nl/homelab/homelab/cycle-tracker
-                tags: ${{ build.commit }}
+                tags: ${{ build.commit[:6] }}
+    - name: deploy
+      type: ci
+      spec:
+        steps:
+          - name: deploy
+            type: run
+            when: |
+              build.target == "main"
+            spec:
+              container:
+                image: evertjstam/drone-helm3:0.16
+                pull: if-not-exists
+              envs:
+                CHART: /cycle-tracker
+                MODE: upgrade
+                NAMESPACE: default
+                CREATE_NAMESPACE: "true"
+                RELEASE: cycle-tracker
+                WAIT_FOR_UPGRADE: "true"
+                TIMEOUT: "20m"
+                VALUES: image.tag=${{ build.commit[:6] }}
+                VALUES_FILES: cycle-tracker/values.yaml
+                KUBE_API_SERVER: ${{ secrets.get("k3s_api_server") }}
+                KUBE_TOKEN: ${{ secrets.get("k3s_token") }}
+                KUBE_CERTIFICATE: ${{ secrets.get("k3s_cert") }}
+                KUBE_SERVICE_ACCOUNT: ${{ secrets.get("k3s_service_account") }}
+    - name: notify
+      type: ci
+      spec:
+        steps:
+          - type: plugin
+            name: matrix_end
+            spec:
+              name: matrix
+              inputs:
+                accesstoken: ${{ secrets.get("matrix_token") }}
+                homeserver: https://matrix.fromej.nl
+                username: chatbot
+                password: ${{ secrets.get("matrix_password") }}
+                roomid: ${{ secrets.get("matrix_roomid") }}
+                userid: "@chatbot:fromej.nl"
+                template: |
+                  {{ repo.name }}
+                  Build **{{ build.status }}** for build #${{ build.number }} ${{ build.link }} 
+                  on branch ${{ build.branch }} by ${{ build.sender }}
+
+                  period.fromej.nl
+              when: always()
