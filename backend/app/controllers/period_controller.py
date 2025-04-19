@@ -111,7 +111,11 @@ def get_period(period_id: int):
     user_id = get_jwt_identity()
     period = PeriodService.get_period_by_id_for_user(user_id, period_id)
     if not period:
-        return abort(404, message=f"Period with ID {period_id} not found.", detail={"error": f"Period with ID {period_id} not found."})
+        return abort(
+            404,
+            message=f"Period with ID {period_id} not found.",
+            detail={"error": f"Period with ID {period_id} not found."},
+        )
     return period
 
 
@@ -139,7 +143,11 @@ def delete_period(period_id: int):
             return
         else:
             # Should be caught by NotFoundError, but as a fallback
-            return abort(404, message=f"Period with ID {period_id} not found.", detail={"error": f"Period with ID {period_id} not found."})
+            return abort(
+                404,
+                message=f"Period with ID {period_id} not found.",
+                detail={"error": f"Period with ID {period_id} not found."},
+            )
     except NotFoundError as e:
         return abort(e.status_code, message=str(e), detail={"error": str(e)})
     except PeriodLogicError as e:  # Catch potential DB errors during delete
