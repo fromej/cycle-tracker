@@ -44,7 +44,7 @@ def db(app):
 
 
 @pytest.fixture(scope="function")
-def client(app):
+def client(app, db):
     """A test client for the app."""
     return app.test_client()
 
@@ -73,7 +73,7 @@ def auth_client(client, test_user):
     """A test client pre-authenticated with the test_user's JWT."""
     # Need app context to create token
     with client.application.app_context():
-        access_token = create_access_token(identity=test_user.id)
+        access_token = create_access_token(identity=str(test_user.id))
     client.environ_base["HTTP_AUTHORIZATION"] = f"Bearer {access_token}"
     # Also set content type for POST/PUT requests often needed with JSON
     client.environ_base["CONTENT_TYPE"] = "application/json"

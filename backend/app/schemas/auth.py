@@ -1,5 +1,5 @@
 from apiflask import Schema, fields
-from marshmallow import ValidationError, validate, validates
+from marshmallow import ValidationError, validate, validates_schema
 
 
 class UserRegistrationSchema(Schema):
@@ -16,11 +16,11 @@ class UserRegistrationSchema(Schema):
     )
     confirm_password = fields.String(required=True, load_only=True)
 
-    # @validates("confirm_password")
-    # def validate_confirm_password(self, value, **kwargs):
-    #     if value != self.fields.password:
-    #         raise ValidationError("Passwords do not match.")
-
+    @validates_schema
+    def validate_password_match(self, data, **kwargs):
+        """Ensure password and confirm_password match."""
+        if data.get("password") != data.get("confirm_password"):
+            raise ValidationError("Passwords do not match.")
 
 class LoginSchema(Schema):
     """Schema for validating login requests."""

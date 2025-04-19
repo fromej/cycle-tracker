@@ -42,8 +42,8 @@ def test_register_username_taken(client, test_user):
     )
     assert response.status_code == 400
     data = response.get_json()
-    assert "error" in data
-    assert test_user.username in data["error"]
+    assert "error" in data["detail"]
+    assert test_user.username in data["detail"]["error"]
 
 
 def test_register_email_taken(client, test_user):
@@ -58,7 +58,7 @@ def test_register_email_taken(client, test_user):
         },
     )
     assert response.status_code == 400
-    assert test_user.email in response.get_json()["error"]
+    assert test_user.email in response.get_json()["detail"]["error"]
 
 
 def test_register_password_mismatch(client, db):
@@ -74,9 +74,9 @@ def test_register_password_mismatch(client, db):
     )
     assert response.status_code == 422  # Validation error from schema
     data = response.get_json()
-    assert "messages" in data
-    assert "confirm_password" in data["messages"]
-    assert "Passwords do not match" in data["messages"]["confirm_password"][0]
+    assert "message" in data
+    assert "Validation error" in data["message"]
+    assert "Passwords do not match" in data["detail"]["json"]['_schema'][0]
 
 
 def test_login_success_email(client, test_user):
@@ -111,8 +111,8 @@ def test_login_wrong_password(client, test_user):
     )
     assert response.status_code == 401  # AuthenticationError
     data = response.get_json()
-    assert "error" in data
-    assert "Invalid credentials" in data["error"]
+    assert "error" in data["detail"]
+    assert "Invalid credentials" in data["detail"]["error"]
 
 
 def test_login_user_not_found(client):
@@ -122,4 +122,4 @@ def test_login_user_not_found(client):
         json={"login": "nosuchuser@example.com", "password": "password"},
     )
     assert response.status_code == 401
-    assert "Invalid credentials" in response.get_json()["error"]
+    assert "Invalid credentials" in response.get_json()["detail"]["error"]

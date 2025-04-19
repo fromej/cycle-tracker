@@ -31,7 +31,7 @@ def test_create_period_missing_data(auth_client):
     """Test creating period with missing start date."""
     response = auth_client.post(url_for("periods.create_period"), json={})
     assert response.status_code == 422  # Validation Error
-    assert "start_date" in response.get_json()["messages"]
+    assert "start_date" in response.get_json()["detail"]["json"].keys()
 
 
 def test_create_period_invalid_date_format(auth_client):
@@ -40,7 +40,7 @@ def test_create_period_invalid_date_format(auth_client):
         json={"start_date": "15-03-2023"},  # Invalid format
     )
     assert response.status_code == 422
-    assert "start_date" in response.get_json()["messages"]
+    assert "start_date" in response.get_json()["detail"]["json"].keys()
 
 
 def test_create_period_unauthorized(client):
@@ -86,7 +86,8 @@ def test_update_period_end_date_before_start(auth_client, test_period):
     # This validation might happen in the service or schema
     # Expecting 400 Bad Request (PeriodLogicError) or 422 (Schema validation)
     assert response.status_code in [400, 422]
-    assert "error" in response.get_json() or "messages" in response.get_json()
+    assert "message" in response.get_json()
+    assert response.get_json()["detail"]["error"] == f"Period {test_period.id} already has an end date."
 
 
 def test_update_period_not_found(auth_client):
@@ -96,7 +97,7 @@ def test_update_period_not_found(auth_client):
         json={"end_date": "2023-04-05"},
     )
     assert response.status_code == 404  # NotFoundError
-    assert "error" in response.get_json()
+    assert response.get_json()["message"] == f"Period with ID 9999 not found for this user."
 
 
 def test_update_period_unauthorized(client, test_period):

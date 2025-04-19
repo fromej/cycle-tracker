@@ -1,4 +1,4 @@
-from apiflask import APIBlueprint, EmptySchema
+from apiflask import APIBlueprint, EmptySchema, abort
 from flask import jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
@@ -11,7 +11,7 @@ period_bp = APIBlueprint("periods", __name__, url_prefix="/periods")
 
 @period_bp.route("", methods=["POST"])
 @period_bp.input(PeriodCreateSchema, arg_name="validated_data")
-@period_bp.output(PeriodSchema)
+@period_bp.output(PeriodSchema, 201)
 @period_bp.doc(security="bearer")
 @jwt_required()
 def create_period(validated_data: dict):
@@ -31,9 +31,9 @@ def create_period(validated_data: dict):
     try:
         return PeriodService.record_period_start(user_id, validated_data["start_date"])
     except PeriodLogicError as e:
-        return jsonify({"error": str(e)}), e.status_code
+        return abort(e.status_code, message=str(e), detail={"error": str(e)})
     except ValidationError as e:
-        return jsonify(e.to_dict()), e.status_code
+        return abort(e.status_code, message=str(e), detail={"error": str(e)})
 
 
 @period_bp.route("/<int:period_id>", methods=["PUT"])
@@ -66,10 +66,7 @@ def update_period(validated_data: dict, period_id: int):
             user_id, period_id, validated_data["end_date"]
         )
     except (PeriodLogicError, NotFoundError, ValidationError) as e:
-        return (
-            jsonify(getattr(e, "payload", {"error": str(e)}) or {"error": str(e)}),
-            e.status_code,
-        )
+        return abort(e.status_code, message=str(e), detail={"error": str(e)})
 
 
 @period_bp.route("", methods=["GET"])
@@ -114,7 +111,7 @@ def get_period(period_id: int):
     user_id = get_jwt_identity()
     period = PeriodService.get_period_by_id_for_user(user_id, period_id)
     if not period:
-        return jsonify({"error": f"Period with ID {period_id} not found."}), 404
+        return abort(404, message=f"Period with ID {period_id} not found.", detail={"error": f"Period with ID {period_id} not found."})
     return period
 
 
@@ -142,8 +139,8 @@ def delete_period(period_id: int):
             return
         else:
             # Should be caught by NotFoundError, but as a fallback
-            return jsonify({"error": "Period could not be deleted."}), 400
+            return abort(404, message=f"Period with ID {period_id} not found.", detail={"error": f"Period with ID {period_id} not found."})
     except NotFoundError as e:
-        return jsonify({"error": str(e)}), e.status_code
+        return abort(e.status_code, message=str(e), detail={"error": str(e)})
     except PeriodLogicError as e:  # Catch potential DB errors during delete
-        return jsonify({"error": str(e)}), e.status_code
+        return abort(e.status_code, message=str(e), detail={"error": str(e)})

@@ -37,6 +37,21 @@ spec:
                 uv sync
                 source .venv/bin/activate
                 isort app --check --profile black
+    - name: test
+      type: ci
+      spec:
+        steps:
+          - name: pytest
+            type: run
+            spec:
+              container:
+                image: ghcr.io/astral-sh/uv:python3.12-alpine
+                pull: if-not-exists
+              script: |-
+                cd backend
+                uv sync
+                source .venv/bin/activate
+                pytest
     - name: build
       type: ci
       spec:

@@ -1,4 +1,4 @@
-from apiflask import APIBlueprint
+from apiflask import APIBlueprint, abort
 from flask import jsonify
 
 from app.schemas import LoginSchema, TokenSchema, UserRegistrationSchema, UserSchema
@@ -27,13 +27,10 @@ def register(validated_data: dict):
         # Pass validated data directly to the service
         return AuthService.register_user(validated_data)
     except RegistrationError as e:
-        return (
-            jsonify({"error": str(e)}),
-            e.status_code,
-        )  # Use status code from exception
+        return abort(e.status_code, message=str(e), detail={"error": str(e)})
     except ValidationError as e:
         # This handles validation errors caught *before* the service call if any
-        return jsonify(e.to_dict()), e.status_code
+        return abort(e.status_code, message=str(e), detail={"error": str(e)})
 
 
 @auth_bp.route("/login", methods=["POST"])
@@ -54,9 +51,9 @@ def login(validated_data: dict):
         access_token = AuthService.login_user(validated_data)
         return {"access_token": access_token}
     except AuthenticationError as e:
-        return jsonify({"error": str(e)}), e.status_code
+        return abort(e.status_code, message=str(e), detail={"error": str(e)})
     except ValidationError as e:
-        return jsonify(e.to_dict()), e.status_code
+        return abort(e.status_code, message=str(e), detail={"error": str(e)})
 
 
 # Optional: Add refresh token endpoint if needed
