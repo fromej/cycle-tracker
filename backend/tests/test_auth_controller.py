@@ -1,8 +1,7 @@
 import json
 
-from flask import url_for
-
 from app.models import User
+from flask import url_for
 
 
 def test_register_success(client, db):
@@ -76,7 +75,7 @@ def test_register_password_mismatch(client, db):
     data = response.get_json()
     assert "message" in data
     assert "Validation error" in data["message"]
-    assert "Passwords do not match" in data["detail"]["json"]['_schema'][0]
+    assert "Passwords do not match" in data["detail"]["json"]["_schema"][0]
 
 
 def test_login_success_email(client, test_user):

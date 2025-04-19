@@ -1,12 +1,12 @@
 repos:
   - repo: https://github.com/psf/black
-    rev: 23.1.0  # Specify the Black version you want
+    rev: 25.1.0  # Specify the Black version you want
     hooks:
       - id: black
         language_version: python3  # Ensure this matches your Python version
 
-  - repo: https://github.com/pre-commit/mirrors-isort
-    rev: v5.10.1  # Specify the isort version you want
+  - repo: https://github.com/pycqa/isort
+    rev: 6.0.1
     hooks:
       - id: isort
-        language_version: python3  # Ensure this matches your Python version
+        name: isort (python)
