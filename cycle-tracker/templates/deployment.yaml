@@ -34,6 +34,9 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
+          env:
+            - name: SQLITE_PATH
+              value: app.db
           {{- with .Values.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
@@ -58,7 +61,7 @@ spec:
           {{- end }}
           volumeMounts:
             - name: data
-              mountPath: /instance
+              mountPath: /app/instance
       volumes:
         - name: data
           {{- if .Values.persistence.enabled }}
