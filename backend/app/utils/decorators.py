@@ -4,8 +4,7 @@ from flask import request
 from marshmallow import Schema
 from marshmallow import ValidationError as MarshmallowValidationError
 
-from app.utils.exceptions import \
-    ValidationError  # Your custom validation error
+from app.utils.exceptions import ValidationError  # Your custom validation error
 
 
 def validate_schema(schema: Schema):

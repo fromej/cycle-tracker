@@ -21,7 +21,9 @@ class PeriodStatsSchema(Schema):
 class CycleStatsSchema(Schema):
     """Schema for cycle statistics report."""
 
-    count = fields.Integer(required=True,)
+    count = fields.Integer(
+        required=True,
+    )
     min_length = fields.Integer(
         allow_none=True,
     )

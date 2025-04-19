@@ -43,13 +43,13 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 
 const authStore = useAuthStore()
 
-const credentials = ref({
+const credentials = ref<Login>({
   login: '',
   password: ''
 })

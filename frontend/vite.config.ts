@@ -14,22 +14,23 @@ export default defineConfig({
                 name: 'Period Tracker',
                 short_name: 'Tracker',
                 description: 'Track your menstrual cycle',
+                start_url: "/",
                 theme_color: '#fbcfe8', // Light Pink
                 background_color: '#ffffff',
                 display: 'standalone',
                 icons: [
                     {
-                        src: 'img/icons/pwa-192x192.png', // You'll need to generate these
+                        src: 'assets/icons/pwa-192x192.png', // You'll need to generate these
                         sizes: '192x192',
                         type: 'image/png'
                     },
                     {
-                        src: 'img/icons/pwa-512x512.png', // You'll need to generate these
+                        src: 'assets/icons/pwa-512x512.png', // You'll need to generate these
                         sizes: '512x512',
                         type: 'image/png'
                     },
                     {
-                        src: 'img/icons/pwa-512x512.maskable.png', // Maskable icon
+                        src: 'assets/icons/pwa-512x512.maskable.png', // Maskable icon
                         sizes: '512x512',
                         type: 'image/png',
                         purpose: 'maskable'

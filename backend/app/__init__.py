@@ -24,11 +24,16 @@ def create_app(config_name: Optional[str] = None) -> APIFlask:
     Returns:
         APIFlask: The configured APIFlask application instance.
     """
-    app = APIFlask(__name__, instance_relative_config=True, static_folder="static", static_url_path='/static')
+    app = APIFlask(
+        __name__,
+        instance_relative_config=True,
+        static_folder="static",
+        static_url_path="/static",
+    )
     app.security_scheme = {
-                'type': 'http',
-                'scheme': 'bearer',
-            }
+        "type": "http",
+        "scheme": "bearer",
+    }
 
     if config_name is None:
         config_name = get_config_name()
@@ -71,7 +76,9 @@ def create_app(config_name: Optional[str] = None) -> APIFlask:
         # Return the user object. If None is returned, the protected endpoint
         # will return a 401 Unauthorized response.
         if user is None:
-            print(f"User with ID {identity} not found from token identity")  # Log this event
+            print(
+                f"User with ID {identity} not found from token identity"
+            )  # Log this event
             return None
 
         return user
@@ -84,16 +91,13 @@ def create_app(config_name: Optional[str] = None) -> APIFlask:
         # callback_options typically contains error message like "Invalid signature"
         return {
             "message": "Signature verification failed or token is malformed.",
-            "error": "invalid_token"
+            "error": "invalid_token",
         }, 401
 
     @jwt.expired_token_loader
     def expired_token_callback(_jwt_header, _jwt_payload):
         """Return JSON response for expired tokens."""
-        return {
-            "message": "The token has expired.",
-            "error": "token_expired"
-        }, 401
+        return {"message": "The token has expired.", "error": "token_expired"}, 401
 
     @jwt.unauthorized_loader
     def unauthorized_callback(callback_options):
@@ -101,7 +105,7 @@ def create_app(config_name: Optional[str] = None) -> APIFlask:
         # callback_options typically contains message like "Missing JWT"
         return {
             "message": "Request does not contain an access token.",
-            "error": "authorization_required"
+            "error": "authorization_required",
         }, 401
 
     # Register blueprints
@@ -120,8 +124,8 @@ def create_app(config_name: Optional[str] = None) -> APIFlask:
     def health_check():
         return jsonify({"status": "healthy"}), 200
 
-    @app.route('/', defaults={'path': ''})
-    @app.route('/<path:path>')
+    @app.route("/", defaults={"path": ""})
+    @app.route("/<path:path>")
     def serve_vue_app(path):
         # Construct the full path to the requested file within the static directory
         file_path = os.path.join(app.static_folder, path)
@@ -135,12 +139,12 @@ def create_app(config_name: Optional[str] = None) -> APIFlask:
             return send_from_directory(app.static_folder, path)
         elif path == "":
             # Handle the root path specifically by serving index.html
-            return send_from_directory(app.static_folder, 'index.html')
+            return send_from_directory(app.static_folder, "index.html")
         else:
             # For any other path that was not an API route, not a /static/ asset,
             # and not a file explicitly found at the static root,
             # assume it's a client-side route and serve the index.html fallback.
-            return send_from_directory(app.static_folder, 'index.html')
+            return send_from_directory(app.static_folder, "index.html")
 
     app.logger.info(f"App created with config: {config_name}")
     app.logger.info(f"Database URI: {app.config['SQLALCHEMY_DATABASE_URI']}")

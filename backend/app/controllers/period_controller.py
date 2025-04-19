@@ -4,8 +4,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from app.schemas import PeriodCreateSchema, PeriodSchema, PeriodUpdateSchema
 from app.services import PeriodService
-from app.utils.exceptions import (NotFoundError, PeriodLogicError,
-                                  ValidationError)
+from app.utils.exceptions import NotFoundError, PeriodLogicError, ValidationError
 
 period_bp = APIBlueprint("periods", __name__, url_prefix="/periods")
 
@@ -13,7 +12,7 @@ period_bp = APIBlueprint("periods", __name__, url_prefix="/periods")
 @period_bp.route("", methods=["POST"])
 @period_bp.input(PeriodCreateSchema, arg_name="validated_data")
 @period_bp.output(PeriodSchema)
-@period_bp.doc(security='bearer')
+@period_bp.doc(security="bearer")
 @jwt_required()
 def create_period(validated_data: dict):
     """
@@ -30,9 +29,7 @@ def create_period(validated_data: dict):
     """
     user_id = get_jwt_identity()
     try:
-        return PeriodService.record_period_start(
-            user_id, validated_data["start_date"]
-        )
+        return PeriodService.record_period_start(user_id, validated_data["start_date"])
     except PeriodLogicError as e:
         return jsonify({"error": str(e)}), e.status_code
     except ValidationError as e:
@@ -42,7 +39,7 @@ def create_period(validated_data: dict):
 @period_bp.route("/<int:period_id>", methods=["PUT"])
 @period_bp.input(PeriodUpdateSchema, arg_name="validated_data")
 @period_bp.output(PeriodSchema)
-@period_bp.doc(security='bearerAuth')
+@period_bp.doc(security="bearerAuth")
 @jwt_required()
 def update_period(validated_data: dict, period_id: int):
     """
@@ -77,7 +74,7 @@ def update_period(validated_data: dict, period_id: int):
 
 @period_bp.route("", methods=["GET"])
 @period_bp.output(PeriodSchema(many=True))
-@period_bp.doc(security='bearerAuth')
+@period_bp.doc(security="bearerAuth")
 @jwt_required()
 def get_periods():
     """
@@ -95,14 +92,12 @@ def get_periods():
     user_id = get_jwt_identity()
     page = request.args.get("page", 1, type=int)
     per_page = request.args.get("per_page", 10, type=int)
-    return PeriodService.get_all_periods_for_user(
-        user_id, page=page, per_page=per_page
-    )
+    return PeriodService.get_all_periods_for_user(user_id, page=page, per_page=per_page)
 
 
 @period_bp.route("/<int:period_id>", methods=["GET"])
 @period_bp.output(PeriodSchema)
-@period_bp.doc(security='bearerAuth')
+@period_bp.doc(security="bearerAuth")
 @jwt_required()
 def get_period(period_id: int):
     """
@@ -125,7 +120,7 @@ def get_period(period_id: int):
 
 @period_bp.route("/<int:period_id>", methods=["DELETE"])
 @period_bp.output(EmptySchema, status_code=204)
-@period_bp.doc(security='bearerAuth')
+@period_bp.doc(security="bearerAuth")
 @jwt_required()
 def delete_period(period_id: int):
     """

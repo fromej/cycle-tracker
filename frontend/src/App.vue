@@ -11,6 +11,7 @@
 <script setup>
 import { RouterView } from 'vue-router'
 import Navbar from '@/components/Navbar.vue'
+import "@khmyznikov/pwa-install";
 </script>
 
 <style scoped>

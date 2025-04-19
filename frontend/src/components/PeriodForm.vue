@@ -46,9 +46,10 @@
   </div>
 </template>
 
-<script setup>
-import { ref, computed } from 'vue';
+<script setup lang="ts">
+import {ref, computed, onMounted} from 'vue';
 import { usePeriodsStore } from '@/stores/periods';
+import getTodayDateString from "@/utils/dateUtils.ts";
 
 const periodsStore = usePeriodsStore();
 
@@ -87,6 +88,11 @@ const handleUpdatePeriod = async () => {
     }
   }
 };
+
+onMounted(() => {
+  newPeriodStartDate.value = getTodayDateString()
+  currentPeriodEndDate.value = getTodayDateString()
+})
 </script>
 
 <style scoped>

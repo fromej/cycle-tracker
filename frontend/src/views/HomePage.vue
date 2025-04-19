@@ -27,12 +27,12 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useAuthStore } from '@/stores/auth';
 import { computed } from 'vue';
 
 const authStore = useAuthStore();
-const isAuthenticated = computed(() => authStore.isAuthenticated);
+const isAuthenticated = computed<Boolean>(() => authStore.isAuthenticated);
 </script>
 
 <style scoped>

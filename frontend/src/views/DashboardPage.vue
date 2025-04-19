@@ -47,8 +47,6 @@ import { usePeriodsStore } from '@/stores/periods';
 import StatsCard from '@/components/StatsCard.vue';
 import PeriodForm from '@/components/PeriodForm.vue';
 import PeriodList from '@/components/PeriodList.vue';
-// Import chart components if using them, e.g.:
-// import CycleChart from '@/components/CycleChart.vue';
 
 const periodsStore = usePeriodsStore();
 
