@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    # image: your-dockerhub-username/period-tracker-api:latest # Optional: specify image name
+    container_name: period_tracker_backend
+    ports:
+      - "5000:5000" # Map host port 5000 to container port 5000
+    volumes:
+      # Mount current directory for development hot-reloading (optional)
+      # Remove or comment out for production image build
+      - .:/app
+      # Mount instance folder to persist SQLite DB outside container (if using SQLite)
+      - ./instance:/app/instance
+    environment:
+      # Pass environment variables from .env file or define them here
+      - FLASK_APP=app:create_app()
+      - FLASK_ENV=${FLASK_ENV:-development} # Default to development if not set in .env
+      - SECRET_KEY=${SECRET_KEY}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - DB_TYPE=${DB_TYPE:-sqlite} # Default to sqlite if not set
+
+      # --- PostgreSQL Settings (only used if DB_TYPE=postgresql) ---
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_HOST=db # Service name of the postgres container
+      - POSTGRES_PORT=5432
+      # Construct DATABASE_URL if needed by application logic (SQLAlchemy uses individual vars)
+      # - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+
+      # --- SQLite Settings (only used if DB_TYPE=sqlite) ---
+      - SQLITE_PATH=${SQLITE_PATH:-instance/app.db} # Default path
+
+    depends_on:
+      db: # Only wait if using postgresql
+        condition: service_healthy # Wait for db to be ready
+    networks:
+      - period_tracker_net
+    # Command override for development (e.g., run Flask dev server)
+    # command: ["flask", "run", "--host=0.0.0.0"] # Use Gunicorn (CMD in Dockerfile) for prod-like
+
+  db: # PostgreSQL service (only needed if DB_TYPE=postgresql)
+    image: postgres:14-alpine
+    container_name: period_tracker_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persist data
+    ports:
+      - "5432:5432" # Map host port if external access needed (usually not for backend-db)
+    networks:
+      - period_tracker_net
+    healthcheck: # Check if postgres is ready to accept connections
+        test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+        interval: 5s
+        timeout: 5s
+        retries: 5
+
+networks:
+  period_tracker_net:
+    driver: bridge
+
+volumes:
+  postgres_data: # Define named volume for postgres data persistence

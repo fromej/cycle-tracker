@@ -1,0 +1,53 @@
+from typing import Any, Dict, Optional
+
+from flask_jwt_extended import create_access_token
+
+from app.extensions import db
+from app.models import User
+from app.services.user_service import UserService
+from app.utils.exceptions import AuthenticationError, RegistrationError
+
+
+class AuthService:
+    """Service layer for authentication logic."""
+
+    @staticmethod
+    def register_user(user_data: Dict[str, Any]) -> User:
+        """Registers a new user."""
+        username = user_data["username"]
+        email = user_data["email"]
+        password = user_data["password"]
+
+        # Check if username or email already exists
+        if UserService.get_user_by_username(username):
+            raise RegistrationError(f"Username '{username}' is already taken.")
+        if UserService.get_user_by_email(email):
+            raise RegistrationError(f"Email '{email}' is already registered.")
+
+        # Create and save the new user
+        new_user = User(username=username, email=email)
+        new_user.set_password(password)
+
+        try:
+            return new_user.save()
+        except Exception as e:
+            db.session.rollback()
+            # Log the exception e
+            raise RegistrationError(
+                "Could not register user due to a database error."
+            ) from e
+
+    @staticmethod
+    def login_user(login_data: Dict[str, Any]) -> str:
+        """Logs in a user and returns an access token."""
+        login_identifier = login_data["login"]  # Can be username or email
+        password = login_data["password"]
+
+        user = UserService.get_user_by_login(login_identifier)
+
+        if user and user.check_password(password):
+            # Identity can be user ID or any unique identifier
+            access_token = create_access_token(identity=str(user.id))
+            return access_token
+        else:
+            raise AuthenticationError("Invalid credentials.")
