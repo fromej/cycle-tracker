@@ -13,7 +13,7 @@ spec:
                 image: evertjstam/drone-helm3:0.16
                 pull: if-not-exists
               envs:
-                CHART: /cycle-tracker
+                CHART: cycle-tracker
                 MODE: lint
           - name: black
             type: run
@@ -66,7 +66,7 @@ spec:
                 image: evertjstam/drone-helm3:0.16
                 pull: if-not-exists
               envs:
-                CHART: /cycle-tracker
+                CHART: cycle-tracker
                 MODE: upgrade
                 NAMESPACE: default
                 CREATE_NAMESPACE: "true"
