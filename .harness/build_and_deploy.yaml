@@ -1,0 +1,22 @@
+version: 1
+kind: pipeline
+spec:
+  stages:
+    - name: build
+      type: ci
+      spec:
+        steps:
+          - type: plugin
+            name: build docker file
+            when: |
+              build.target == "main"
+            spec:
+              name: docker
+              inputs:
+                username: ${{ secrets.get("harness_username") }}
+                password: ${{ secrets.get("harness_registry") }}
+                dockerfile: Dockerfile
+                platform: linux/arm64
+                registry: harness.fromej.nl
+                repo: harness.fromej.nl/homelab/homelab/cycle-tracker
+                tags: ${{ build.commit }}
