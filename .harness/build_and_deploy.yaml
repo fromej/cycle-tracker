@@ -22,6 +22,7 @@ spec:
                 image: ghcr.io/astral-sh/uv:python3.12-alpine
                 pull: if-not-exists
               script: |-
+                cd backend
                 uv sync
                 source .venv/bin/activate
                 black backend/app
@@ -32,6 +33,7 @@ spec:
                 image: ghcr.io/astral-sh/uv:python3.12-alpine
                 pull: if-not-exists
               script: |-
+                cd backend
                 uv sync
                 source .venv/bin/activate
                 isort backend/app
