@@ -22,10 +22,11 @@ spec:
                 image: ghcr.io/astral-sh/uv:python3.12-alpine
                 pull: if-not-exists
               script: |-
+                echo ${{ build.commit[:6] }}
                 cd backend
                 uv sync
                 source .venv/bin/activate
-                black backend/app
+                black app
           - name: isort
             type: run
             spec:
@@ -36,7 +37,7 @@ spec:
                 cd backend
                 uv sync
                 source .venv/bin/activate
-                isort backend/app
+                isort app
     - name: build
       type: ci
       spec:
