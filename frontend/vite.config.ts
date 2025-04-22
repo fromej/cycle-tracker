@@ -12,7 +12,7 @@ export default defineConfig({
             registerType: 'autoUpdate',
             manifest: {
                 name: 'Period Tracker',
-                short_name: 'Tracker',
+                short_name: 'Period Tracker',
                 description: 'Track your menstrual cycle',
                 start_url: "/",
                 theme_color: '#fbcfe8', // Light Pink
@@ -20,21 +20,30 @@ export default defineConfig({
                 display: 'standalone',
                 icons: [
                     {
-                        src: 'assets/icons/pwa-192x192.png', // You'll need to generate these
+                        src: 'assets/icons/192.png',
                         sizes: '192x192',
-                        type: 'image/png'
+                        type: 'image/png',
+                        purpose: 'any'
                     },
                     {
-                        src: 'assets/icons/pwa-512x512.png', // You'll need to generate these
+                        src: 'assets/icons/512.png',
                         sizes: '512x512',
-                        type: 'image/png'
+                        type: 'image/png',
+                        purpose: 'any'
                     },
                     {
-                        src: 'assets/icons/pwa-512x512.maskable.png', // Maskable icon
+                        src: 'assets/icons/192.png', // Maskable icon
+                        sizes: '192x192',
+                        type: 'image/png',
+                        purpose: 'maskable'
+                    },
+                    {
+                        src: 'assets/icons/512.png', // Maskable icon
                         sizes: '512x512',
                         type: 'image/png',
                         purpose: 'maskable'
-                    }
+                    },
+
                 ]
             }
         })
