@@ -1,4 +1,6 @@
 from apiflask import APIBlueprint
+from flask_jwt_extended import get_jwt_identity, jwt_required
+
 from app.schemas import CycleStatsSchema, PeriodStatsSchema
 from app.schemas.report import (
     CycleContextSchema,
@@ -6,7 +8,6 @@ from app.schemas.report import (
     PredictionSchema,
 )
 from app.services import ReportService
-from flask_jwt_extended import get_jwt_identity, jwt_required
 
 report_bp = APIBlueprint("reports", __name__, url_prefix="/reports")
 
