@@ -1,30 +1,33 @@
-// frontend/src/api/periods.ts
 import apiClient from './index';
 import { AxiosResponse } from 'axios';
-import { Period, PeriodCreate, PeriodUpdate, PeriodStats, CycleStats } from '@/types'; // Import types
+import { Period, PeriodCreate, PeriodUpdate } from '@/types';
 
-export const fetchPeriods = (page: number = 1, per_page: number = 10): Promise<AxiosResponse<Period[]>> => {
-    return apiClient.get('/periods', {
-        params: { page, per_page }
-    });
-};
+const BASE_URL = '/periods';
 
-export const createPeriod = (periodData: PeriodCreate): Promise<AxiosResponse<Period>> => {
-    return apiClient.post('/periods', periodData);
-};
+class PeriodApi {
+    static fetchPeriods(page = 1, per_page = 10): Promise<AxiosResponse<Period[]>> {
+        return apiClient.get(BASE_URL, { params: { page, per_page } });
+    }
 
-export const updatePeriod = (periodId: number, periodData: PeriodUpdate): Promise<AxiosResponse<Period>> => {
-    return apiClient.put(`/periods/${periodId}`, periodData);
-};
+    static createPeriod(periodData: PeriodCreate): Promise<AxiosResponse<Period>> {
+        return apiClient.post(BASE_URL, periodData);
+    }
 
-export const deletePeriod = (periodId: number): Promise<AxiosResponse<void>> => {
-    return apiClient.delete(`/periods/${periodId}`);
-};
+    static getPeriod(periodId: number): Promise<AxiosResponse<Period>> {
+        return apiClient.get(`${BASE_URL}/${periodId}`);
+    }
 
-export const fetchPeriodStats = (): Promise<AxiosResponse<PeriodStats>> => {
-    return apiClient.get('/reports/period-stats');
-};
+    static getActivePeriod(): Promise<AxiosResponse<Period>> {
+        return apiClient.get(`${BASE_URL}/active`)
+    }
 
-export const fetchCycleStats = (): Promise<AxiosResponse<CycleStats>> => {
-    return apiClient.get('/reports/cycle-stats');
-};
+    static updatePeriod(periodId: number, periodData: PeriodUpdate): Promise<AxiosResponse<Period>> {
+        return apiClient.put(`${BASE_URL}/${periodId}`, periodData);
+    }
+
+    static deletePeriod(periodId: number): Promise<AxiosResponse<void>> {
+        return apiClient.delete(`${BASE_URL}/${periodId}`);
+    }
+}
+
+export default PeriodApi;

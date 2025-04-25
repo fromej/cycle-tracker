@@ -1,5 +1,5 @@
 // frontend/src/api/index.ts
-import axios, { AxiosInstance, AxiosResponse } from 'axios'; // Import types
+import axios, { AxiosInstance } from 'axios'; // Import types
 import { useAuthStore } from '@/stores/auth';
 
 // Create an Axios instance and type it

@@ -1,14 +1,11 @@
-// frontend/src/stores/periods.ts
 import { defineStore } from 'pinia';
-import { fetchPeriods, createPeriod, updatePeriod, deletePeriod, fetchPeriodStats, fetchCycleStats } from '@/api/periods';
-import { PeriodsState, PeriodsGetters, PeriodsActions, Period, PeriodCreate, PeriodUpdate, PeriodStats, CycleStats } from '@/types'; // Import types
+import PeriodApi from '@/api/periods';
+import { PeriodsState, PeriodsActions, PeriodCreate, PeriodUpdate } from '@/types';
+import {useReportsStore} from "@/stores/reports.ts";
 
-// Use generics to type the store
-export const usePeriodsStore = defineStore<'periods', PeriodsState, PeriodsGetters, PeriodsActions>('periods', {
-    state: (): PeriodsState => ({ // Type the state function return
+export const usePeriodsStore = defineStore<'periods', PeriodsState, {}, PeriodsActions>('periods', {
+    state: () => ({
         periods: [],
-        periodStats: null,
-        cycleStats: null,
         loading: false,
         error: null,
         pagination: {
@@ -17,100 +14,74 @@ export const usePeriodsStore = defineStore<'periods', PeriodsState, PeriodsGette
             total: 0
         }
     }),
-    getters: {
-        // Add getters here if needed, type them
-    } as PeriodsGetters, // Cast to PeriodsGetters
 
     actions: {
-        async fetchPeriods(page: number = this.pagination.page, per_page: number = this.pagination.per_page): Promise<void> { // Type parameters and return
+        async fetchPeriods(page = this.pagination.page, per_page = this.pagination.per_page) {
             this.loading = true;
             this.error = null;
             try {
-                const response = await fetchPeriods(page, per_page);
-                this.periods = response.data; // Assuming response.data is Period[]
-                // Update pagination if API provides total count
-            } catch (error: any) { // Type error
+                const response = await PeriodApi.fetchPeriods(page, per_page);
+                this.periods = response.data;
+                // Pagination logic could go here if the API supports it
+            } catch (error: any) {
                 this.error = error.response?.data?.message || 'Failed to fetch periods';
                 console.error('Fetch periods error:', error);
             } finally {
                 this.loading = false;
             }
         },
-        async createPeriod(startDate: string): Promise<void> { // Type parameter and return
-            this.loading = true;
+
+        async createPeriod(startDate: string) {
             this.error = null;
             try {
-                const periodData: PeriodCreate = { start_date: startDate }; // Ensure data matches type
-                const response = await createPeriod(periodData);
+                const periodData: PeriodCreate = { start_date: startDate };
+                const response = await PeriodApi.createPeriod(periodData);
                 this.periods.unshift(response.data);
-                // Refetch stats
-                await Promise.all([this.fetchPeriodStats(), this.fetchCycleStats()]);
-            } catch (error: any) { // Type error
-                this.error = error.response?.data?.message || 'Failed to record period start';
+                await this.refreshStats()
+                return this.periods[0]
+            } catch (error: any) {
+                this.error = error.response?.data?.message || 'Failed to create period';
                 console.error('Create period error:', error);
-            } finally {
-                this.loading = false;
             }
         },
-        async updatePeriod(periodId: number, endDate: string): Promise<void> { // Type parameters and return
+
+        async updatePeriod(periodId: number, endDate: string) {
             this.loading = true;
             this.error = null;
             try {
-                const periodData: PeriodUpdate = { end_date: endDate }; // Ensure data matches type
-                const response = await updatePeriod(periodId, periodData);
+                const periodData: PeriodUpdate = { end_date: endDate };
+                const response = await PeriodApi.updatePeriod(periodId, periodData);
                 const index = this.periods.findIndex(p => p.id === periodId);
-                if (index !== -1) {
-                    this.periods[index] = response.data;
-                }
-                // Refetch stats
-                await Promise.all([this.fetchPeriodStats(), this.fetchCycleStats()]);
-            } catch (error: any) { // Type error
-                this.error = error.response?.data?.message || 'Failed to record period end';
+                if (index !== -1) this.periods[index] = response.data;
+                await this.refreshStats()
+                return response.data
+            } catch (error: any) {
+                this.error = error.response?.data?.message || 'Failed to update period';
                 console.error('Update period error:', error);
             } finally {
                 this.loading = false;
             }
         },
-        async deletePeriod(periodId: number): Promise<void> { // Type parameter and return
+
+        async deletePeriod(periodId: number) {
             this.loading = true;
             this.error = null;
             try {
-                await deletePeriod(periodId);
+                await PeriodApi.deletePeriod(periodId);
                 this.periods = this.periods.filter(p => p.id !== periodId);
-                // Refetch stats
-                await Promise.all([this.fetchPeriodStats(), this.fetchCycleStats()]);
-            } catch (error: any) { // Type error
+            } catch (error: any) {
                 this.error = error.response?.data?.message || 'Failed to delete period';
                 console.error('Delete period error:', error);
             } finally {
+                await this.refreshStats()
                 this.loading = false;
             }
         },
-        async fetchPeriodStats(): Promise<void> { // Type return
-            this.loading = true; // Or a specific stats loading state
-            this.error = null;
-            try {
-                const response = await fetchPeriodStats();
-                this.periodStats = response.data; // Assuming response.data is PeriodStats
-            } catch (error: any) { // Type error
-                this.error = error.response?.data?.message || 'Failed to fetch period stats';
-                console.error('Fetch period stats error:', error);
-            } finally {
-                this.loading = false; // Or specific stats loading state
-            }
-        },
-        async fetchCycleStats(): Promise<void> { // Type return
-            this.loading = true; // Or a specific stats loading state
-            this.error = null;
-            try {
-                const response = await fetchCycleStats();
-                this.cycleStats = response.data; // Assuming response.data is CycleStats
-            } catch (error: any) { // Type error
-                this.error = error.response?.data?.message || 'Failed to fetch cycle stats';
-                console.error('Fetch cycle stats error:', error);
-            } finally {
-                this.loading = false; // Or specific stats loading state
-            }
+
+        async refreshStats() {
+            const reportStore = useReportsStore()
+            await reportStore.fetchPeriodStats()
+            await reportStore.fetchCycleContext()
         }
-    } as PeriodsActions // Cast to PeriodsActions
+    }
 });

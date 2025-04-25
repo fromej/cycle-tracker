@@ -1,9 +1,12 @@
 from apiflask import APIBlueprint
-from flask import Blueprint, jsonify
-from flask_jwt_extended import get_jwt_identity, jwt_required
-
 from app.schemas import CycleStatsSchema, PeriodStatsSchema
+from app.schemas.report import (
+    CycleContextSchema,
+    OvulationWindowSchema,
+    PredictionSchema,
+)
 from app.services import ReportService
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 report_bp = APIBlueprint("reports", __name__, url_prefix="/reports")
 
@@ -40,3 +43,46 @@ def get_cycle_statistics():
     """
     user_id = get_jwt_identity()
     return ReportService.get_cycle_stats(user_id)
+
+
+@report_bp.route("/predicted-next-period", methods=["GET"])
+@report_bp.output(PredictionSchema)
+@jwt_required()
+def get_predicted_next_period():
+    """
+    Predict the user's next period start date using average cycle length.
+    """
+    user_id = get_jwt_identity()
+    date = ReportService.get_predicted_next_period(user_id)
+    if not date:
+        return {"predicted_start": None}
+    return {"predicted_start": date}
+
+
+@report_bp.route("/ovulation-window", methods=["GET"])
+@report_bp.output(OvulationWindowSchema)
+@jwt_required()
+def get_ovulation_window():
+    """
+    Estimate ovulation date and fertile window based on predicted next period.
+    """
+    user_id = get_jwt_identity()
+    window = ReportService.get_estimated_ovulation(user_id)
+    if not window:
+        return {}
+    return window
+
+
+@report_bp.route("/cycle-context", methods=["GET"])
+@report_bp.output(CycleContextSchema)
+@jwt_required()
+def get_cycle_context():
+    """
+    Provide a comprehensive snapshot of the user's current cycle context.
+    Includes status (in period or not), cycle day, progress, ovulation estimate, etc.
+    """
+    user_id = get_jwt_identity()
+    context = ReportService.get_cycle_context(user_id)
+    if not context:
+        return {}  # Empty object if no periods exist yet
+    return context

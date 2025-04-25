@@ -1,10 +1,9 @@
 from apiflask import APIBlueprint, EmptySchema, abort
-from flask import jsonify, request
-from flask_jwt_extended import get_jwt_identity, jwt_required
-
 from app.schemas import PeriodCreateSchema, PeriodSchema, PeriodUpdateSchema
 from app.services import PeriodService
 from app.utils.exceptions import NotFoundError, PeriodLogicError, ValidationError
+from flask import jsonify, request
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 period_bp = APIBlueprint("periods", __name__, url_prefix="/periods")
 
@@ -117,6 +116,24 @@ def get_period(period_id: int):
             detail={"error": f"Period with ID {period_id} not found."},
         )
     return period
+
+
+@period_bp.route("/active", methods=["GET"])
+@period_bp.output(PeriodSchema)
+@period_bp.doc(security="bearerAuth")
+@jwt_required()
+def get_active_period():
+    """
+    Get last active period for the logged-in user.
+    ---
+    Security: JWT Bearer Token required.
+    Responses:
+        200: Period details returned successfully.
+        401: Unauthorized.
+        404: Period not found for this user.
+    """
+    user_id = get_jwt_identity()
+    return PeriodService.get_active_period_for_user(user_id)
 
 
 @period_bp.route("/<int:period_id>", methods=["DELETE"])

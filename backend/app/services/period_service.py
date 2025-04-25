@@ -1,8 +1,8 @@
 import datetime
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 
 from app.extensions import db
-from app.models import Period, User
+from app.models import Period
 from app.utils.exceptions import NotFoundError, PeriodLogicError
 
 
@@ -72,6 +72,13 @@ class PeriodService:
             .paginate(page=page, per_page=per_page, error_out=False)
         )
         return pagination.items  # Or return the pagination object for more info
+
+    @staticmethod
+    def get_active_period_for_user(user_id: int):
+        """Get the last active period for a user"""
+        return Period.query.filter(
+            Period.user_id == user_id, Period.end_date.is_(None)
+        ).first()
 
     @staticmethod
     def delete_period_for_user(user_id: int, period_id: int) -> bool:

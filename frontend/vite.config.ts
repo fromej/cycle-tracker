@@ -6,7 +6,13 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
     plugins: [
-        vue(),
+        vue({
+            template: {
+                compilerOptions: {
+                    isCustomElement: tag => tag === 'pwa-install'
+                }
+            }
+        }),
         tailwindcss(),
         VitePWA({
             registerType: 'autoUpdate',
@@ -44,7 +50,23 @@ export default defineConfig({
                         purpose: 'maskable'
                     },
 
-                ]
+                ],
+                screenshots: [
+                    {
+                        src: "assets/screenshots/desktop.png",
+                        sizes: "1440x900",
+                        type: "image/png",
+                        form_factor: "wide",
+                        label: "Desktop"
+                    },
+                    // {
+                    //     "src": "mobile_screenshot.png",
+                    //     "sizes": "375x667",
+                    //     "type": "image/png",
+                    //     "form_factor": "narrow",
+                    //     "label": "Mobile"
+                    // }
+                ],
             }
         })
     ],

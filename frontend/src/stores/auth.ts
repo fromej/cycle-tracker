@@ -1,8 +1,7 @@
-// frontend/src/stores/auth.ts
 import { defineStore } from 'pinia';
-import { loginUser, registerUser } from '@/api/auth';
+import AuthApi from '@/api/auth';
 import router from '@/router';
-import { AuthState, AuthGetters, AuthActions, Login, UserRegistration } from '@/types'; // Import types
+import {AuthState, AuthGetters, AuthActions, Login, UserRegistration} from '@/types'; // Import types
 
 // Use generics to type the store
 export const useAuthStore = defineStore<'auth', AuthState, AuthGetters, AuthActions>('auth', {
@@ -22,7 +21,7 @@ export const useAuthStore = defineStore<'auth', AuthState, AuthGetters, AuthActi
             this.loading = true;
             this.error = null;
             try {
-                const response = await loginUser(credentials);
+                const response = await AuthApi.loginUser(credentials);
                 const token = response.data.access_token;
                 this.token = token;
                 localStorage.setItem('token', token);
@@ -39,7 +38,7 @@ export const useAuthStore = defineStore<'auth', AuthState, AuthGetters, AuthActi
             this.loading = true;
             this.error = null;
             try {
-                const response = await registerUser(userData);
+                const response = await AuthApi.registerUser(userData);
                 // Handle registration success (e.g., redirect to login)
                 router.push({ name: 'login' });
             } catch (error: any) { // Type error

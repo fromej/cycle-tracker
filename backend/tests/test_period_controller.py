@@ -132,6 +132,29 @@ def test_get_periods_success(auth_client, test_period, test_user):
     assert data[1]["start_date"] == test_period.start_date.isoformat()
 
 
+def test_get_active_period(auth_client, test_period, test_user):
+    """Test getting list of periods."""
+    response = auth_client.get(url_for("periods.get_active_period"))
+
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data == {}
+
+    # Add another period
+    period2 = Period(user_id=test_user.id, start_date=datetime.date(2023, 2, 1))
+    test_period.save()  # Make sure fixture period is saved
+    period2.save()
+
+    response = auth_client.get(url_for("periods.get_active_period"))
+    assert response.status_code == 200
+    data = response.get_json()
+    assert isinstance(data, dict)
+    assert data["id"] == period2.id
+    # Check if periods are ordered by start_date desc (default in service)
+    assert data["start_date"] == period2.start_date.isoformat()
+    assert not data["end_date"]
+
+
 def test_get_periods_pagination(auth_client, test_user, db):
     """Test pagination for getting periods."""
     # Create several periods

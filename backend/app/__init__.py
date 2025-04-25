@@ -2,13 +2,12 @@ import os
 from typing import Optional, Type
 
 from apiflask import APIFlask
-from flask import jsonify, send_from_directory
-
 from app.config import Config, config_by_name, get_config_name
 from app.controllers import register_blueprints, register_error_handlers
 from app.extensions import db, jwt, ma, migrate
 from app.models import Period, User
 from app.services import UserService
+from flask import jsonify, send_from_directory
 
 
 def create_app(config_name: Optional[str] = None) -> APIFlask:
@@ -32,7 +31,7 @@ def create_app(config_name: Optional[str] = None) -> APIFlask:
     )
     app.security_scheme = {
         "type": "http",
-        "scheme": "bearer",
+        "scheme": "bearerAuth",
     }
 
     if config_name is None:

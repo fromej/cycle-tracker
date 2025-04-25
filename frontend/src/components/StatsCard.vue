@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white p-6 rounded-lg shadow-md text-center">
     <div class="text-xl font-bold text-primary mb-2">{{ title }}</div>
-    <div class="text-3xl font-semibold text-text">{{ value !== null ? value.toFixed(1) : '-' }} {{ unit }}</div>
+    <div class="text-3xl font-semibold text-text">{{ value !== null ? value.toFixed(decimals) : '-' }} {{ unit }}</div>
     <div class="text-gray-500 text-sm mt-2">{{ description }}</div>
   </div>
 </template>
@@ -17,6 +17,10 @@ const props = defineProps({
   value: {
     type: [Number, null],
     default: null
+  },
+  decimals: {
+    type: [Number, null],
+    default: 0
   },
   unit: {
     type: String,

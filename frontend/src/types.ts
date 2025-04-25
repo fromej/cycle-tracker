@@ -1,82 +1,108 @@
-// frontend/src/types.ts
-
 // --- API Schemas ---
 
-export interface CycleStats {
-    average_length: number | null;
-    count: number; // OpenAPI says integer, number is sufficient in TS/JS
-    max_length: number | null; // OpenAPI says integer
-    min_length: number | null; // OpenAPI says integer
-}
-
-export interface HTTPError {
-    detail: any; // Can be complex, use any for simplicity unless structured
-    message: string;
-}
-
-export interface Login {
-    login: string;
-    password: string;
-}
-
 export interface Period {
-    created_at: string; // date-time format
-    duration: number | null; // integer, nullable when end_date is null
-    end_date: string | null; // date format, nullable
-    id: number; // integer
-    start_date: string; // date format
-    user_id: number; // integer
+    id: number;
+    user_id: number;
+    start_date: string; // ISO date format
+    end_date: string | null; // Nullable for ongoing periods
+    duration: number | null; // Nullable if end_date is missing
+    created_at: string; // ISO date-time
 }
 
 export interface PeriodCreate {
-    start_date: string; // date format
+    start_date: string;
+}
+
+export interface PeriodUpdate {
+    end_date: string;
 }
 
 export interface PeriodStats {
     average_duration: number | null;
-    count: number; // integer
-    max_duration: number | null; // integer
-    min_duration: number | null; // integer
+    max_duration: number | null;
+    min_duration: number | null;
+    count: number;
 }
 
-export interface PeriodUpdate {
-    end_date: string; // date format
+export interface CycleStats {
+    average_length: number | null;
+    max_length: number | null;
+    min_length: number | null;
+    count: number;
+}
+
+export interface PredictedPeriod {
+    predicted_start: string;
+}
+
+export interface OvulationWindow {
+    ovulation_date: string;
+    fertile_window_start: string;
+    fertile_window_end: string;
+}
+
+export interface CycleContext {
+    status: 'period' | 'waiting';
+    current_period_id: number;
+    days_running?: number;
+    cycle_day?: number;
+    cycle_length?: number;
+    progress_percent?: number;
+    predicted_start?: string;
+    days_until_next_period?: number;
+    ovulation_date?: string;
+    fertile_window: {
+        start?: string;
+        end?: string;
+    };
+    is_today_ovulation: boolean;
+    is_in_fertile_window: boolean;
+}
+
+
+// --- Auth & User ---
+
+export interface Login {
+    login: string; // Could be email or username depending on backend
+    password: string;
+}
+
+export interface UserRegistration {
+    username: string;
+    email: string;
+    password: string;
+    confirm_password: string;
+}
+
+export interface User {
+    id: number;
+    username: string;
+    email: string;
+    created_at: string;
 }
 
 export interface Token {
     access_token: string;
 }
 
-export interface User {
-    created_at: string; // date-time format
-    email: string;
-    id: number; // integer
-    username: string;
-}
+// --- Error Handling ---
 
-export interface UserRegistration {
-    confirm_password: string;
-    email: string;
-    password: string;
-    username: string;
+export interface HTTPError {
+    message: string;
+    detail: any; // Flexible shape; use specific structure if needed
 }
 
 export interface ValidationError {
     message: string;
-    // Detail can be complex. Representing as a record of strings to string arrays
-    // based on the example, but it could vary. 'any' is also an option.
     detail: Record<string, string | string[] | Record<string, string[]>>;
-    // A simpler approach for detail might be just 'any' if you don't need
-    // structured access to validation errors everywhere.
-    // detail: any;
 }
-
 
 // --- Pinia Store Types ---
 
+// Auth
 export interface AuthState {
     token: string | null;
-    user: User | null; // Assuming you might fetch user details later
+    user: User | null;
     loading: boolean;
     error: string | null;
 }
@@ -90,14 +116,11 @@ export interface AuthActions {
     register(userData: UserRegistration): Promise<void>;
     logout(): void;
     initializeAuth(): void;
-    // fetchUser(): Promise<void>; // If you add a fetch user action
 }
 
-
+// Periods Store
 export interface PeriodsState {
     periods: Period[];
-    periodStats: PeriodStats | null;
-    cycleStats: CycleStats | null;
     loading: boolean;
     error: string | null;
     pagination: {
@@ -107,15 +130,32 @@ export interface PeriodsState {
     };
 }
 
-export interface PeriodsGetters {
-    // Add getters here if needed, e.g., sortedPeriods
-}
+export interface PeriodsGetters {}
 
 export interface PeriodsActions {
     fetchPeriods(page?: number, per_page?: number): Promise<void>;
-    createPeriod(startDate: string): Promise<void>; // Expects date string
-    updatePeriod(periodId: number, endDate: string): Promise<void>; // Expects date string
+    createPeriod(startDate: string): Promise<void>;
+    updatePeriod(periodId: number, endDate: string): Promise<void>;
     deletePeriod(periodId: number): Promise<void>;
+}
+
+// Reports Store (new!)
+export interface ReportsState {
+    periodStats: PeriodStats | null;
+    cycleStats: CycleStats | null;
+    cycleContext: CycleContext | null;
+    predictedNextPeriod: PredictedPeriod | null;
+    ovulationWindow: OvulationWindow | null;
+    loading: boolean;
+    error: string | null;
+}
+
+export interface ReportsGetters {}
+
+export interface ReportsActions {
     fetchPeriodStats(): Promise<void>;
     fetchCycleStats(): Promise<void>;
+    fetchPredictedNextPeriod(): Promise<void>;
+    fetchOvulationWindow(): Promise<void>;
+    fetchCycleContext(): Promise<void>;
 }

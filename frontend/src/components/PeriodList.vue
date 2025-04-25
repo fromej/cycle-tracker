@@ -3,7 +3,7 @@
     <h3 class="text-xl font-semibold mb-4">Recorded Periods</h3>
     <ul class="space-y-4">
       <li
-          v-for="period in periods"
+          v-for="period in periodsStore.periods"
           :key="period.id"
           class="bg-background p-4 rounded-lg shadow-sm border border-accent flex justify-between items-center"
       >
@@ -25,28 +25,26 @@
         </div>
       </li>
     </ul>
-    <div v-if="!periods.length && !periodsStore.loading" class="text-center text-gray-500">No periods recorded yet.</div>
+    <div v-if="!periodsStore.periods.length && !periodsStore.loading" class="text-center text-gray-500">No periods recorded yet.</div>
   </div>
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { onMounted} from 'vue';
 import { usePeriodsStore } from '@/stores/periods';
+import {useReportsStore} from "@/stores/reports";
 
-const periodsStore = usePeriodsStore();
-
-const props = defineProps({
-  periods: {
-    type: Array,
-    required: true
-  }
-});
+const periodsStore  = usePeriodsStore();
+const reportStore = useReportsStore();
 
 const handleDelete = async (periodId) => {
-  if (confirm('Are you sure you want to delete this period?')) {
     await periodsStore.deletePeriod(periodId);
-  }
+    await reportStore.fetchCycleContext();
 };
+
+onMounted(async () => {
+  await periodsStore.fetchPeriods()
+})
 </script>
 
 <style scoped>
