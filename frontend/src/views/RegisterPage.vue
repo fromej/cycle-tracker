@@ -1,5 +1,6 @@
 <template>
-  <div class="max-w-md mx-auto mt-8 bg-white p-8 rounded-lg shadow-md">
+  <div class="container mx-auto px-4 py-8">
+  <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
     <h2 class="text-2xl font-bold text-primary mb-6 text-center">Register</h2>
     <form @submit.prevent="handleRegister">
       <div class="mb-4">
@@ -51,7 +52,7 @@
         >
       </div>
       <div v-if="authStore.error" class="text-red-500 text-sm mb-4">{{ authStore.error }}</div>
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between gap-2">
         <button
             type="submit"
             :disabled="authStore.loading"
@@ -64,6 +65,7 @@
         </router-link>
       </div>
     </form>
+  </div>
   </div>
 </template>
 

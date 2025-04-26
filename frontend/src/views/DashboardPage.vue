@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard">
+  <div class="dashboard container mx-auto px-4 py-8">
     <div v-if="reportsStore.loading" class="text-center text-gray-600">
       Loading data...
     </div>
