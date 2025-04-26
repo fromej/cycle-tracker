@@ -7,7 +7,7 @@
       icon="src/assets/icons/512.png"/>
   <div id="app" class="min-h-screen flex flex-col">
     <Navbar />
-    <main class="flex-grow container mx-auto px-4 py-8">
+    <main class="flex-grow">
       <RouterView />
     </main>
   </div>
