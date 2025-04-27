@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroicons/vue": "^2.2.0",
     "@khmyznikov/pwa-install": "^0.5.4",
     "@tailwindcss/vite": "^4.1.4",
     "axios": "^1.6.8",

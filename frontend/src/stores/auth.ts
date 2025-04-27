@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import AuthApi from '@/api/auth';
 import router from '@/router';
-import {AuthState, AuthGetters, AuthActions, Login, UserRegistration} from '@/types'; // Import types
+import {AuthState, AuthGetters, AuthActions, Login, UserRegistration} from '@/types';
+import {useReportsStore} from "@/stores/reports.ts"; // Import types
 
 // Use generics to type the store
 export const useAuthStore = defineStore<'auth', AuthState, AuthGetters, AuthActions>('auth', {
@@ -58,6 +59,8 @@ export const useAuthStore = defineStore<'auth', AuthState, AuthGetters, AuthActi
         logout(): void { // Type return
             this.token = null;
             this.user = null;
+            const reportStore = useReportsStore()
+            reportStore.$reset()
             localStorage.removeItem('token');
             router.push({ name: 'login' });
         },

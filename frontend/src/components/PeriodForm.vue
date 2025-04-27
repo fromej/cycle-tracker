@@ -1,51 +1,3 @@
-<template>
-  <div>
-    <h3 class="text-xl font-semibold mb-4">Record a New Period</h3>
-    <div class="flex items-end gap-4 mb-6">
-      <div class="flex-grow">
-        <label for="start_date" class="block text-gray-700 text-sm font-bold mb-2">Start Date:</label>
-        <input
-            type="date"
-            id="start_date"
-            v-model="newPeriodStartDate"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        />
-      </div>
-      <button
-          @click="handleCreatePeriod"
-          :disabled="periodsStore.loading || !newPeriodStartDate"
-          class="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
-      >
-        Record Start
-      </button>
-    </div>
-
-    <div v-if="currentOpenPeriod" class="border-t pt-6 mt-6">
-      <h3 class="text-xl font-semibold mb-4">End Current Period</h3>
-      <p class="text-gray-700 mb-4">Current period started on: {{ currentOpenPeriod.start_date }}</p>
-      <div class="flex items-end gap-4">
-        <div class="flex-grow">
-          <label for="end_date" class="block text-gray-700 text-sm font-bold mb-2">End Date:</label>
-          <input
-              type="date"
-              id="end_date"
-              v-model="currentPeriodEndDate"
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-        <button
-            @click="handleUpdatePeriod"
-            :disabled="periodsStore.loading || !currentOpenPeriod || !currentPeriodEndDate"
-            class="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
-        >
-          Record End
-        </button>
-      </div>
-    </div>
-    <div v-if="periodsStore.error" class="text-red-500 text-sm mt-4">{{ periodsStore.error }}</div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import {ref, computed, onMounted} from 'vue';
 import { usePeriodsStore } from '@/stores/periods';
@@ -56,10 +8,8 @@ const periodsStore = usePeriodsStore();
 const newPeriodStartDate = ref('');
 const currentPeriodEndDate = ref('');
 
-// Find the most recent period that doesn't have an end_date
 const currentOpenPeriod = computed(() => {
-  // Sort periods by start date descending
-  const sortedPeriods = [...periodsStore.periods].sort((a, b) => new Date(b.start_date) - new Date(a.start_date));
+  const sortedPeriods = [...periodsStore.periods].sort((a, b) => new Date(b.start_date).getTime() - new Date(a.start_date).getTime());
   return sortedPeriods.find(period => !period.end_date);
 });
 
@@ -67,34 +17,93 @@ const currentOpenPeriod = computed(() => {
 const handleCreatePeriod = async () => {
   if (newPeriodStartDate.value) {
     await periodsStore.createPeriod(newPeriodStartDate.value);
-    // Clear the input only if successful
     if (!periodsStore.error) {
-      newPeriodStartDate.value = '';
+      newPeriodStartDate.value = getTodayDateString(); // Reset to today if needed
     }
   }
 };
 
 const handleUpdatePeriod = async () => {
   if (currentOpenPeriod.value && currentPeriodEndDate.value) {
-    // Basic validation: end date should not be before start date
     if (new Date(currentPeriodEndDate.value) < new Date(currentOpenPeriod.value.start_date)) {
-      periodsStore.error = 'End date cannot be before the start date.';
+      periodsStore.setError('End date cannot be before the start date.'); // Use setter if available
       return;
     }
     await periodsStore.updatePeriod(currentOpenPeriod.value.id, currentPeriodEndDate.value);
-    // Clear the input only if successful
     if (!periodsStore.error) {
-      currentPeriodEndDate.value = '';
+      currentPeriodEndDate.value = getTodayDateString(); // Reset to today if needed
     }
   }
 };
 
 onMounted(() => {
-  newPeriodStartDate.value = getTodayDateString()
-  currentPeriodEndDate.value = getTodayDateString()
-})
+  // Initialize with today's date
+  newPeriodStartDate.value = getTodayDateString();
+  currentPeriodEndDate.value = getTodayDateString();
+
+  // Fetch periods if needed, assuming it's done elsewhere or in the store constructor
+  // periodsStore.fetchPeriods();
+});
 </script>
 
+<template>
+  <div class="space-y-6">
+    <div>
+      <h3 class="text-lg font-semibold text-primary mb-4">Record New Period</h3>
+      <div class="flex flex-col sm:flex-row sm:items-end sm:gap-4 space-y-3 sm:space-y-0">
+        <div class="flex-grow">
+          <label for="start_date" class="block text-sm font-medium text-gray-600 mb-1.5">Start Date:</label>
+          <input
+              type="date"
+              id="start_date"
+              v-model="newPeriodStartDate"
+              class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 py-2 px-3 text-gray-700 leading-tight"
+              :max="getTodayDateString()"
+          />
+        </div>
+        <button
+            @click="handleCreatePeriod"
+            :disabled="periodsStore.loading || !newPeriodStartDate"
+            class="btn btn-primary"
+        >
+          Record Start
+        </button>
+      </div>
+    </div>
+
+    <div v-if="currentOpenPeriod" class="border-t border-gray-100 pt-6">
+      <h3 class="text-lg font-semibold text-primary mb-4">End Current Period</h3>
+      <p class="text-sm text-gray-600 mb-4">
+        Current period started on:
+        <span class="font-medium text-gray-700">{{ currentOpenPeriod.start_date }}</span>
+      </p>
+      <div class="flex flex-col sm:flex-row sm:items-end sm:gap-4 space-y-3 sm:space-y-0">
+        <div class="flex-grow">
+          <label for="end_date" class="block text-sm font-medium text-gray-600 mb-1.5">End Date:</label>
+          <input
+              type="date"
+              id="end_date"
+              v-model="currentPeriodEndDate"
+              class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 py-2 px-3 text-gray-700 leading-tight"
+              :min="currentOpenPeriod.start_date"
+              :max="getTodayDateString()"
+          />
+        </div>
+        <button
+            @click="handleUpdatePeriod"
+            :disabled="periodsStore.loading || !currentOpenPeriod || !currentPeriodEndDate"
+            class="btn btn-primary"
+        >
+          Record End
+        </button>
+      </div>
+    </div>
+
+    <div v-if="periodsStore.error" class="mt-4 p-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-md" role="alert">
+      {{ periodsStore.error }}
+    </div>
+  </div>
+</template>
+
 <style scoped>
-/* PeriodForm specific styles */
 </style>

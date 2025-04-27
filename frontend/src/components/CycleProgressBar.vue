@@ -1,47 +1,144 @@
 <script setup lang="ts">
 import { useReportsStore } from '@/stores/reports';
+import { computed } from 'vue';
+import { differenceInDays, parseISO, isValid, startOfDay, subDays } from 'date-fns';
+// Import SparklesIcon
+import { SparklesIcon } from '@heroicons/vue/24/solid'; // Or use '/solid' if you prefer
 
 const store = useReportsStore();
+
+// --- Date and Phase Calculations ---
+const currentDate = computed(() => startOfDay(new Date())); // Use current date from system
+
+const cycleStartDate = computed(() => {
+  // Calculate start date based on current date and cycle day
+  if (store.cycleContext?.cycle_day) {
+    try {
+      // Subtract (cycle_day - 1) days from today
+      return subDays(currentDate.value, store.cycleContext.cycle_day - 1);
+    } catch (e) {
+      console.error("Error calculating cycle start date:", e);
+    }
+  }
+  return null;
+});
+
+const getDayNumber = (dateStr: string | null): number | null => {
+  // Helper to calculate day number within the cycle from a date string
+  if (!dateStr || !cycleStartDate.value) return null;
+  try {
+    const date = parseISO(dateStr);
+    const startDate = cycleStartDate.value;
+    if (isValid(date) && isValid(startDate)) {
+      const dayNum = differenceInDays(date, startDate) + 1;
+      return dayNum > 0 ? dayNum : null; // Return null if date is before start date
+    }
+  } catch (e) {
+    console.error(`Error calculating day number for ${dateStr}:`, e);
+  }
+  return null;
+};
+
+const ovulationDayNumber = computed(() => getDayNumber(store.cycleContext?.ovulation_date));
+const fertileStartDayNumber = computed(() => getDayNumber(store.cycleContext?.fertile_window?.start));
+const fertileEndDayNumber = computed(() => getDayNumber(store.cycleContext?.fertile_window?.end));
+
+const getPercent = (dayNumber: number | null): number | null => {
+  // Helper to calculate percentage position
+  const cycleLength = store.cycleContext?.cycle_length;
+  if (dayNumber !== null && cycleLength && cycleLength > 0) {
+    const percent = (dayNumber / cycleLength) * 100;
+    return Math.max(0, Math.min(100, percent));
+  }
+  return null;
+};
+
+const ovulationPercent = computed(() => getPercent(ovulationDayNumber.value));
+const fertileStartPercent = computed(() => getPercent(fertileStartDayNumber.value));
+const fertileEndPercent = computed(() => getPercent(fertileEndDayNumber.value));
+
+const fertileWindowWidthPercent = computed(() => {
+  if (fertileStartPercent.value !== null && fertileEndPercent.value !== null) {
+    // Calculate width, add small buffer for end day inclusivity visual
+    const width = fertileEndPercent.value - fertileStartPercent.value;
+    const oneDayWidth = store.cycleContext?.cycle_length ? (1 / store.cycleContext.cycle_length) * 100 : 0;
+    return Math.max(0, width + (oneDayWidth / 2)); // Make slightly wider to feel inclusive of end day
+  }
+  return 0;
+});
+
+const cycleLengthDisplay = computed(() => store.cycleContext?.cycle_length ?? '~');
+const progressPercentDisplay = computed(() => store.cycleContext?.progress_percent ?? 0);
+
+// --- End Calculations ---
+
 </script>
 
 <template>
-  <div v-if="!store.cycleContext">
-    <div class="w-full p-4 rounded-2xl bg-surface shadow-md space-y-2 animate-pulse">
-      <div class="text-sm text-text-secondary">Cycle Progress</div>
+  <div class="dashboard-card bg-white p-4">
+    <div v-if="!store.cycleContext" class="space-y-3 animate-pulse">
+      <div class="flex justify-between items-center">
+        <div class="h-4 bg-gray-200 rounded w-2/5"></div>
+        <div class="h-4 bg-gray-200 rounded w-1/4"></div>
+      </div>
+      <div class="relative pt-1 pb-3">
+        <div class="h-2.5 bg-gray-200 rounded-full w-full"></div>
+      </div>
+      <div class="flex justify-between">
+        <div class="h-3 bg-gray-200 rounded w-1/12"></div>
+        <div class="h-3 bg-gray-200 rounded w-1/12"></div>
+      </div>
+    </div>
 
-      <div class="relative w-full h-4 bg-gray-300 rounded-full overflow-hidden">
-        <div class="h-full bg-gray-400 rounded-full w-1/3"></div>
+    <div v-else class="space-y-2">
+      <div class="flex justify-between items-center gap-2">
+        <span class="text-sm font-medium text-gray-700 flex-shrink-0">
+          Day {{ store.cycleContext.cycle_day }}
+          <span class="text-gray-500">of {{ cycleLengthDisplay }}</span>
+        </span>
+        <span v-if="store.cycleContext.days_until_next_period !== null" class="text-sm text-gray-500 text-right flex-shrink overflow-hidden whitespace-nowrap text-ellipsis">
+          Est. {{ store.cycleContext.days_until_next_period }} days remaining
+        </span>
+      </div>
+
+      <div class="relative pt-1 pb-4">
+        <div class="relative w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+          <div
+              v-if="fertileStartPercent !== null && fertileWindowWidthPercent > 0"
+              class="absolute top-0 bottom-0 h-full rounded-md"
+              :class="[store.cycleContext?.isInFertileWindow ? 'bg-primary-200' : 'bg-primary-100']"
+              :style="{ left: `${fertileStartPercent}%`, width: `${fertileWindowWidthPercent}%` }"
+              title="Predicted Fertile Window"
+          ></div>
+          <div
+              class="absolute top-0 bottom-0 left-0 h-full bg-primary rounded-full transition-all duration-500 ease-out z-10"
+              :style="{ width: `${progressPercentDisplay}%` }"
+          />
+        </div>
+
         <div
-            class="absolute top-0 h-4 w-[2px] bg-gray-400 left-1/2 transform -translate-x-1/2"
-            title="Ovulation placeholder"
-        />
+            v-if="ovulationPercent !== null"
+            class="absolute bottom-0 transform -translate-x-1/2 translate-y-[calc(50%+1px)] z-20"
+            :style="{ left: `${ovulationPercent}%` }"
+            :title="`Predicted Ovulation: Day ${ovulationDayNumber}`"
+        >
+          <SparklesIcon class="h-3.5 w-3.5 text-primary" aria-hidden="true" />
+        </div>
       </div>
 
-      <div class="flex justify-between text-xs text-text-secondary">
-        <div class="h-3 bg-gray-300 rounded w-1/6"></div>
-        <div class="h-3 bg-gray-300 rounded w-1/4"></div>
-        <div class="h-3 bg-gray-300 rounded w-1/6"></div>
+      <div class="relative flex justify-between text-xs text-gray-500 h-4">
+        <span>Day 1</span>
+
+        <span
+            v-if="ovulationPercent !== null && ovulationDayNumber"
+            class="absolute transform -translate-x-1/2 text-primary font-medium whitespace-nowrap"
+            :style="{ left: `${ovulationPercent}%` }"
+        >
+            Ovulation
+        </span>
+
+        <span>Day {{ cycleLengthDisplay }}</span>
       </div>
-    </div>
-  </div>
-  <div v-else class="w-full p-4 rounded-2xl bg-surface shadow-md space-y-2">
-    <div class="text-sm text-text-secondary">Current cycle: day {{store.cycleContext?.cycle_day}}</div>
-    <div class="relative w-full h-4 bg-border rounded-full overflow-hidden">
-      <div
-          class="h-full bg-primary transition-all"
-          :style="{ width: `${store.cycleContext?.progress_percent}%` }"
-      />
-<!--      &lt;!&ndash; Ovulation marker &ndash;&gt;-->
-<!--      <div-->
-<!--          v-if="store.cycleContext?.ovulation_date"-->
-<!--          class="absolute top-0 h-4 w-[2px] bg-pink-700 left-1/2 transform -translate-x-1/2"-->
-<!--          title="Ovulation"-->
-<!--      />-->
-    </div>
-    <div class="flex justify-between text-xs text-text-secondary">
-      <span>Day 1</span>
-<!--      <span class="text-primary font-semibold">Ovulation Day</span>-->
-      <span>Day {{ store.cycleContext?.cycle_length ?? '-' }}</span>
     </div>
   </div>
 </template>

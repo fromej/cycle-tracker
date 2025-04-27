@@ -89,7 +89,7 @@
         <h2 class="text-3xl lg:text-4xl font-semibold text-gray-800 mb-4">Simple, Visual, Insightful</h2>
         <p class="text-lg text-gray-600 mb-12 max-w-2xl mx-auto">Get a clear view of your cycle at a glance with our intuitive dashboard.</p>
         <div class="max-w-4xl mx-auto bg-gray-100 p-6 rounded-lg shadow-xl">
-          <img src="https://placehold.co/900x450/E0E7FF/4F46E5?text=App+Dashboard+Mockup" alt="App dashboard mockup" class="rounded-md">
+          <img src="@/assets/screenshots/dashboard.png" alt="App dashboard mockup" class="rounded-md">
         </div>
       </div>
     </section>

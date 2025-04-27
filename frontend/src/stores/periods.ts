@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import PeriodApi from '@/api/periods';
 import { PeriodsState, PeriodsActions, PeriodCreate, PeriodUpdate } from '@/types';
 import {useReportsStore} from "@/stores/reports.ts";
+import {formatISO} from "date-fns";
 
 export const usePeriodsStore = defineStore<'periods', PeriodsState, {}, PeriodsActions>('periods', {
     state: () => ({
@@ -29,6 +30,11 @@ export const usePeriodsStore = defineStore<'periods', PeriodsState, {}, PeriodsA
             } finally {
                 this.loading = false;
             }
+        },
+
+        async startPeriodToday() {
+            const today = formatISO(new Date(), { representation: 'date' });
+            return this.createPeriod(today)
         },
 
         async createPeriod(startDate: string) {

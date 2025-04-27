@@ -20,6 +20,7 @@ class ReportService:
             .order_by(Period.start_date)
             .all()
         )
+        count = Period.query.filter(Period.user_id == user_id).count()
 
         durations: List[int] = [
             p.duration for p in periods_with_duration if p.duration is not None
@@ -27,7 +28,7 @@ class ReportService:
 
         if not durations:
             return {
-                "count": 0,
+                "count": count,
                 "min_duration": None,
                 "max_duration": None,
                 "average_duration": None,
@@ -39,7 +40,7 @@ class ReportService:
             avg_duration = None  # Should not happen if durations list is not empty, but safety first
 
         return {
-            "count": len(durations),
+            "count": count,
             "min_duration": min(durations),
             "max_duration": max(durations),
             "average_duration": avg_duration,

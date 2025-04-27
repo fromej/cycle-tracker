@@ -134,9 +134,11 @@ export interface PeriodsGetters {}
 
 export interface PeriodsActions {
     fetchPeriods(page?: number, per_page?: number): Promise<void>;
+    startPeriodToday(): Promise<void>;
     createPeriod(startDate: string): Promise<void>;
     updatePeriod(periodId: number, endDate: string): Promise<void>;
     deletePeriod(periodId: number): Promise<void>;
+    refreshStats(): Promise<void>;
 }
 
 // Reports Store (new!)

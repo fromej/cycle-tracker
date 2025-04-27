@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h3 class="text-xl font-semibold mb-4">Recorded Periods</h3>
     <ul class="space-y-4">
       <li
           v-for="period in periodsStore.periods"
