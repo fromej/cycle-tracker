@@ -7,7 +7,7 @@
       icon="src/assets/icons/512.png"/>
   <div id="app" class="min-h-screen flex flex-col">
     <Navbar />
-    <main class="flex-grow">
+    <main class="flex-grow bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-100">
       <RouterView />
     </main>
   </div>
