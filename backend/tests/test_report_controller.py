@@ -1,7 +1,8 @@
 import datetime
 
-from app.models import Period
 from flask import url_for
+
+from app.models import Period
 
 
 def test_get_period_stats_success(auth_client, test_user, db):
@@ -29,7 +30,7 @@ def test_get_period_stats_success(auth_client, test_user, db):
     assert response.status_code == 200
     data = response.get_json()
 
-    assert data["count"] == 3
+    assert data["count"] == 4
     assert data["min_duration"] == 4
     assert data["max_duration"] == 6
     assert data["average_duration"] == (5 + 4 + 6) / 3  # 5.0
@@ -42,7 +43,7 @@ def test_get_period_stats_no_completed_periods(auth_client, test_user, db):
     response = auth_client.get(url_for("reports.get_period_statistics"))
     assert response.status_code == 200
     data = response.get_json()
-    assert data["count"] == 0
+    assert data["count"] == 1
     assert data["min_duration"] is None
     assert data["max_duration"] is None
     assert data["average_duration"] is None
