@@ -1,7 +1,8 @@
 <template>
   <nav class="bg-primary text-white p-4 shadow-md">
     <div class="container mx-auto flex justify-between items-center">
-      <router-link :to="{ name: isAuthenticated ? 'dashboard' : 'home' }" class="text-xl font-bold">
+      <router-link :to="{ name: isAuthenticated ? 'dashboard' : 'home' }" class="text-xl flex gap-2 items-center font-bold">
+        <img src="@/assets/icons/180.png" alt="Period Tracker" class="nav-image">
         Period Tracker
       </router-link>
       <div>
@@ -31,5 +32,11 @@ const handleLogout = () => {
 </script>
 
 <style scoped>
-/* Navbar specific styles */
+.nav-image {
+  height: 27px;
+  width: 27px;
+  background: var(--color-background);
+  border-radius: 25%;
+  padding: 3px;
+}
 </style>
