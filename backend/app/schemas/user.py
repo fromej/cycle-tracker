@@ -10,3 +10,10 @@ class UserSchema(Schema):
     username = fields.String(required=True, validate=validate.Length(min=3, max=80))
     email = fields.Email(required=True, validate=validate.Length(max=120))
     created_at = fields.DateTime(dump_only=True)
+
+
+class ChangePasswordSchema(Schema):
+    """Schema for changing password."""
+
+    current_password = fields.String(required=True)
+    new_password = fields.String(required=True)

@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
 import AuthApi from '@/api/auth';
 import router from '@/router';
-import {AuthState, AuthGetters, AuthActions, Login, UserRegistration} from '@/types';
-import {useReportsStore} from "@/stores/reports.ts"; // Import types
+import {AuthState, AuthGetters, AuthActions, Login, UserRegistration, PasswordChange} from '@/types';
+import {useReportsStore} from "@/stores/reports.ts";
+import UsersApi from "@/api/users.ts"; // Import types
 
 // Use generics to type the store
 export const useAuthStore = defineStore<'auth', AuthState, AuthGetters, AuthActions>('auth', {
@@ -20,6 +21,12 @@ export const useAuthStore = defineStore<'auth', AuthState, AuthGetters, AuthActi
         clearError() {
             this.error = null
         },
+        async changePassword(data: PasswordChange) {
+            return await UsersApi.changeOwnPassword(data)
+        },
+        async deleteAccount() {
+            return await UsersApi.deleteOwnUser()
+        },
         async login(credentials: Login): Promise<void> { // Type parameter and return
             console.log(credentials)
             this.loading = true;
@@ -29,7 +36,7 @@ export const useAuthStore = defineStore<'auth', AuthState, AuthGetters, AuthActi
                 const token = response.data.access_token;
                 this.token = token;
                 localStorage.setItem('token', token);
-                // Optionally fetch user details here
+                await this.fetchUser()
                 router.push({ name: 'dashboard' });
             } catch (error: any) { // Type error
                 this.error = error.response?.data?.message || 'Login failed';
@@ -42,7 +49,7 @@ export const useAuthStore = defineStore<'auth', AuthState, AuthGetters, AuthActi
             this.loading = true;
             this.error = null;
             try {
-                const response = await AuthApi.registerUser(userData);
+                await AuthApi.registerUser(userData);
                 // Handle registration success (e.g., redirect to login)
                 router.push({ name: 'login' });
             } catch (error: any) { // Type error
@@ -59,6 +66,10 @@ export const useAuthStore = defineStore<'auth', AuthState, AuthGetters, AuthActi
                 this.loading = false;
             }
         },
+        async fetchUser(): void {
+            const user = await UsersApi.getOwnUser()
+            this.user = user.data
+        },
         logout(): void { // Type return
             this.token = null;
             this.user = null;
@@ -69,8 +80,10 @@ export const useAuthStore = defineStore<'auth', AuthState, AuthGetters, AuthActi
         },
         initializeAuth(): void { // Type return
             // Logic remains the same
-            if (this.token) {
-                // Validation logic if needed
+            const token = localStorage.getItem("token")
+            if (token) {
+                this.token = token
+                this.fetchUser()
             }
         }
     } as AuthActions // Cast to AuthActions

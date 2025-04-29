@@ -13,6 +13,7 @@
               id="username"
               v-model="userData.username"
               required
+              minlength="3"
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           >
         </div>
@@ -40,6 +41,7 @@
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           >
         </div>
+        <p v-if="userData.password !== userData.confirm_password" class="text-red-500 text-xs italic mt-1">New passwords do not match.</p>
         <div class="mb-6">
           <label for="confirm_password" class="block text-gray-700 text-sm font-bold mb-2">
             {{ $t('registerPage.confirmPassword') }}:
@@ -71,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import {computed, ref} from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import Navbar from "@/components/Navbar.vue";
 

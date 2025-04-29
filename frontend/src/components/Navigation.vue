@@ -10,7 +10,7 @@
          <span v-if="sidebarOpen">
           <router-link :to="{ name: 'dashboard' }" class="text-l flex gap-2 items-center font-bold text-primary">
             <img src="@/assets/icons/180.png" alt="Period Tracker" class="nav-image">
-            Period Tracker
+            {{ $t('common.title')}}
           </router-link>
          </span>
         <button @click="toggleSidebar" class="p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">

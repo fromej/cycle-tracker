@@ -28,5 +28,4 @@ class BaseModel(db.Model):
     @classmethod
     def get_by_id(cls: type[T], record_id: int) -> T | None:
         """Gets a record by its primary key."""
-        return db.session.get(cls, record_id)  # New style query
-        # Alternatively: return cls.query.get(record_id) # Old style
+        return db.session.get(cls, record_id)

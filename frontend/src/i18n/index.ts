@@ -4,7 +4,7 @@ import nl from '@/locales/nl.json';
 
 const i18n = createI18n({
     legacy: false,
-    locale: 'nl', // Set the initial locale
+    locale: 'en', // Set the initial locale
     fallbackLocale: 'en', // Fallback if a translation is missing
     messages: {
         en,

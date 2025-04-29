@@ -1,9 +1,7 @@
 from apiflask import APIBlueprint, abort
-from flask import jsonify
 
 from app.schemas import LoginSchema, TokenSchema, UserRegistrationSchema, UserSchema
 from app.services import AuthService
-from app.utils.decorators import validate_schema_with_data
 from app.utils.exceptions import AuthenticationError, RegistrationError, ValidationError
 
 auth_bp = APIBlueprint("auth", __name__, url_prefix="/auth")

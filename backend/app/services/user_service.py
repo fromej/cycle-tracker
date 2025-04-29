@@ -28,3 +28,14 @@ class UserService:
         if not user:
             user = User.find_by_username(login)
         return user
+
+    @staticmethod
+    def update_password(user: User, new_password: str) -> None:
+        """Updates a user's password."""
+        user.set_password(new_password)
+        user.save()
+
+    @staticmethod
+    def delete_user(user: User) -> None:
+        """Deletes a user."""
+        user.delete()

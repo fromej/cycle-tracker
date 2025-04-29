@@ -1,5 +1,6 @@
 {
   "common": {
+    "title": "Period tracker",
     "login": "Login",
     "register": "Register",
     "days": "days",

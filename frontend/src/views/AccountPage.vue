@@ -123,13 +123,6 @@ import { useAuthStore } from '@/stores/auth'; // Assuming your store path
 import { useRouter } from 'vue-router';
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 
-// Define interfaces for structure (optional but good practice)
-interface User {
-  username?: string;
-  email?: string;
-  joinDate?: string | Date; // Assuming join date is available
-  // Add other fields as necessary
-}
 
 interface PasswordData {
   currentPassword: '';
@@ -156,9 +149,9 @@ const passwordMismatch = computed(() => {
 
 // Format join date (example)
 const formattedJoinDate = computed(() => {
-  if (authStore.user?.joinDate) {
+  if (authStore.user?.created_at) {
     try {
-      return new Date(authStore.user.joinDate).toLocaleDateString('en-US', {
+      return new Date(authStore.user.created_at).toLocaleDateString('en-US', {
         year: 'numeric', month: 'long', day: 'numeric'
       });
     } catch (e) {
@@ -182,8 +175,8 @@ const handleChangePassword = async () => {
   try {
     // Assume authStore.changePassword exists and handles API call + state updates
     await authStore.changePassword({
-      currentPassword: passwordData.currentPassword,
-      newPassword: passwordData.newPassword,
+      current_password: passwordData.currentPassword,
+      new_password: passwordData.newPassword,
     });
 
     // If successful (no error thrown by store action):

@@ -74,6 +74,11 @@ export interface UserRegistration {
     confirm_password: string;
 }
 
+export interface PasswordChange {
+    current_password: string;
+    new_password: string;
+}
+
 export interface User {
     id: number;
     username: string;
