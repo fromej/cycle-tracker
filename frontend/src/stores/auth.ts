@@ -17,6 +17,9 @@ export const useAuthStore = defineStore<'auth', AuthState, AuthGetters, AuthActi
     } as AuthGetters, // Cast to AuthGetters
 
     actions: {
+        clearError() {
+            this.error = null
+        },
         async login(credentials: Login): Promise<void> { // Type parameter and return
             console.log(credentials)
             this.loading = true;

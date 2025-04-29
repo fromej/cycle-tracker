@@ -26,25 +26,25 @@ export default defineConfig({
                 display: 'standalone',
                 icons: [
                     {
-                        src: 'assets/icons/192.png',
+                        src: '@/assets/icons/192.png',
                         sizes: '192x192',
                         type: 'image/png',
                         purpose: 'any'
                     },
                     {
-                        src: 'assets/icons/512.png',
+                        src: '@/assets/icons/512.png',
                         sizes: '512x512',
                         type: 'image/png',
                         purpose: 'any'
                     },
                     {
-                        src: 'assets/icons/192.png', // Maskable icon
+                        src: '@/assets/icons/192.png', // Maskable icon
                         sizes: '192x192',
                         type: 'image/png',
                         purpose: 'maskable'
                     },
                     {
-                        src: 'assets/icons/512.png', // Maskable icon
+                        src: '@/assets/icons/512.png', // Maskable icon
                         sizes: '512x512',
                         type: 'image/png',
                         purpose: 'maskable'
@@ -53,7 +53,7 @@ export default defineConfig({
                 ],
                 screenshots: [
                     {
-                        src: "assets/screenshots/desktop.png",
+                        src: "@/assets/screenshots/desktop.png",
                         sizes: "1440x900",
                         type: "image/png",
                         form_factor: "wide",

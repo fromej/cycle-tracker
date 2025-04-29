@@ -1,6 +1,8 @@
 <template>
   <div class="homepage-wrapper">
 
+    <Navbar />
+
     <section class="hero-section relative text-center overflow-hidden bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-100 min-h-[calc(100vh-var(--navbar-height,64px))] flex items-center justify-center p-6">
       <div class="relative z-10 max-w-3xl mx-auto">
         <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-800 mb-5 font-serif leading-tight animate-fade-in-up">
@@ -9,20 +11,13 @@
         <p class="text-lg sm:text-xl text-gray-600 mb-10 leading-relaxed animate-fade-in-up animation-delay-300">
           Track your period, predict fertile windows, gain insights into your unique patterns, and sync with your body's natural rhythm effortlessly.
         </p>
-        <div class="flex flex-col sm:flex-row justify-center items-center gap-4 animate-fade-in-up animation-delay-600">
-          <div v-if="!isAuthenticated">
+        <div class="flex flex-col sm:flex-row justify-center items-center animate-fade-in-up animation-delay-600">
             <router-link :to="{ name: 'register' }" class="btn btn-primary w-full sm:w-auto">
               Start Tracking for Free
             </router-link>
             <router-link :to="{ name: 'login' }" class="btn btn-secondary mt-4 sm:mt-0 sm:ml-4 w-full sm:w-auto">
               Login
             </router-link>
-          </div>
-          <div v-else>
-            <router-link :to="{ name: 'dashboard' }" class="btn btn-primary w-full sm:w-auto">
-              Go to Your Dashboard
-            </router-link>
-          </div>
         </div>
       </div>
     </section>
@@ -98,16 +93,9 @@
       <div class="container mx-auto px-6 text-center">
         <h2 class="text-3xl lg:text-4xl font-semibold mb-4">Ready to Discover Your Rhythm?</h2>
         <p class="text-lg text-indigo-100 mb-8 max-w-xl mx-auto">Join thousands of women taking control of their cycle health. It's free!</p>
-        <div v-if="!isAuthenticated">
           <router-link :to="{ name: 'register' }" class="btn btn-white">
             Sign Up Now
           </router-link>
-        </div>
-        <div v-else>
-          <router-link :to="{ name: 'dashboard' }" class="btn btn-white">
-            View Your Dashboard
-          </router-link>
-        </div>
       </div>
     </section>
 
@@ -115,11 +103,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/auth';
-import { computed } from 'vue';
-
-const authStore = useAuthStore();
-const isAuthenticated = computed<boolean>(() => authStore.isAuthenticated);
+import Navbar from "@/components/Navbar.vue";
 </script>
 
 <style scoped>

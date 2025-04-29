@@ -1,4 +1,5 @@
 <template>
+  <Navbar />
   <div class="container mx-auto px-4 py-8">
   <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
     <h2 class="text-2xl font-bold text-primary mb-6 text-center">Login</h2>
@@ -48,6 +49,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import Navbar from "@/components/Navbar.vue";
 
 const authStore = useAuthStore()
 

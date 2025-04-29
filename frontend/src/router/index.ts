@@ -5,6 +5,7 @@ import LoginPage from '@/views/LoginPage.vue';
 import RegisterPage from '@/views/RegisterPage.vue';
 import DashboardPage from '@/views/DashboardPage.vue';
 import { useAuthStore } from '@/stores/auth';
+import AccountPage from "@/views/AccountPage.vue";
 
 // Define routes with type annotations
 const routes: Array<RouteRecordRaw> = [
@@ -17,19 +18,25 @@ const routes: Array<RouteRecordRaw> = [
         path: '/login',
         name: 'login',
         component: LoginPage,
-        meta: { requiresGuest: true } as { requiresGuest: boolean } // Type the meta field
+        meta: { requiresGuest: true } as { requiresGuest: boolean }
     },
     {
         path: '/register',
         name: 'register',
         component: RegisterPage,
-        meta: { requiresGuest: true } as { requiresGuest: boolean } // Type the meta field
+        meta: { requiresGuest: true } as { requiresGuest: boolean }
     },
     {
         path: '/dashboard',
         name: 'dashboard',
         component: DashboardPage,
-        meta: { requiresAuth: true } as { requiresAuth: boolean } // Type the meta field
+        meta: { requiresAuth: true } as { requiresAuth: boolean }
+    },
+    {
+        path: '/account',
+        name: 'account',
+        component: AccountPage,
+        meta: { requiresAuth: true } as { requiresAuth: boolean }
     }
 ];
 
