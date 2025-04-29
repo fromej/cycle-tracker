@@ -1,0 +1,176 @@
+{
+  "common": {
+    "login": "Login",
+    "register": "Register",
+    "days": "days",
+    "day": "day",
+    "loading": "Loading...",
+    "error": "Error",
+    "notAvailable": "N/A",
+    "dates": {
+      "invalid": "Invalid Date",
+      "error": "Error"
+    }
+  },
+  "homepage": {
+    "hero": {
+      "title": "Understand Your Cycle,",
+      "titleHighlight": "Empower Your Life.",
+      "subtitle": "Track your period, predict fertile windows, gain insights into your unique patterns, and sync with your body's natural rhythm effortlessly.",
+      "buttons": {
+        "register": "Start Tracking for Free"
+      }
+    },
+    "features": {
+      "title": "Everything You Need",
+      "subtitle": "From simple logging to powerful insights, we've got you covered.",
+      "cards": {
+        "tracking": {
+          "title": "Effortless Tracking",
+          "description": "Quickly log your period start and end dates. Simple and intuitive."
+        },
+        "predictions": {
+          "title": "Smart Predictions",
+          "description": "See your predicted fertile window, ovulation day, and next period."
+        },
+        "insights": {
+          "title": "Personalized Insights",
+          "description": "Discover your average cycle length, period duration, and unique patterns."
+        }
+      }
+    },
+    "benefits": {
+      "title": "Connect With Your Body",
+      "subtitle": "Go beyond tracking. Understand the 'why' behind your cycle.",
+      "items": {
+        "plan": {
+          "title": "Plan Ahead with Confidence",
+          "description": "Know when to expect your period and fertile days, making it easier to plan events, trips, or intimacy."
+        },
+        "wellbeing": {
+          "title": "Tune Into Your Wellbeing",
+          "description": "Notice patterns in your energy, mood, and physical symptoms throughout your cycle to better support your overall health."
+        }
+      }
+    },
+    "peek": {
+      "title": "Simple, Visual, Insightful",
+      "subtitle": "Get a clear view of your cycle at a glance with our intuitive dashboard."
+    },
+    "cta": {
+      "title": "Ready to Discover Your Rhythm?",
+      "subtitle": "Join thousands of women taking control of their cycle health. It's free!",
+      "buttons": {
+        "register": "Sign Up Now",
+        "dashboard": "View Your Dashboard"
+      }
+    }
+  },
+  "login": {
+    "title": "Login",
+    "usernameOrEmail": "Username or Email",
+    "password": "Password",
+    "loggingIn": "Logging In...",
+    "needAccount": "Need an account? Register"
+  },
+  "registerPage": {
+    "title": "Register",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "registering": "Registering...",
+    "alreadyHaveAccount": "Already have an account? Login"
+  },
+  "dashboard": {
+    "loader": {
+      "message": "Loading your dashboard..."
+    },
+    "error": {
+      "title": "Oops!",
+      "refreshHint": "Please try refreshing."
+    },
+    "newUser": {
+      "title": "Welcome! Let's Get Started",
+      "subtitle": "Log your first period to unlock personalized cycle insights, predictions, and more.",
+      "button": "Log First Period"
+    },
+    "sections": {
+      "currentCycle": {
+        "title": "Current Cycle"
+      },
+      "insights": {
+        "title": "Your Insights"
+      },
+      "logHistory": {
+        "recordTitle": "Record Periods",
+        "historyTitle": "Your Period History"
+      }
+    }
+  },
+  "periodForm": {
+    "recordNew": {
+      "title": "Record New Period",
+      "startDateLabel": "Start Date:",
+      "button": "Record Start"
+    },
+    "endCurrent": {
+      "title": "End Current Period",
+      "startedOnPrefix": "Current period started on:",
+      "endDateLabel": "End Date:",
+      "button": "Record End"
+    },
+    "errors": {
+      "endDateBeforeStart": "End date cannot be before the start date."
+    }
+  },
+  "fertileWindowCard": {
+    "title": "Fertile Window",
+    "statusLabels": {
+      "ovulation": "Ovulation Day",
+      "fertile": "Fertile Window",
+      "low": "Low Fertility"
+    },
+    "statusText": {
+      "ovulation": "Based on your data, today looks like your predicted <b>ovulation day</b>.",
+      "fertile": "You're likely in your <b>fertile window</b> right now.",
+      "low": "Currently predicted to be <b>outside</b> your fertile window."
+    },
+    "dateLabels": {
+      "fertileWindow": "Predicted Fertile Days:",
+      "ovulation": "Predicted Ovulation:"
+    }
+  },
+  "cycleProgressBar": {
+    "title": {
+      "dayPrefix": "Day",
+      "daySeparator": "of",
+      "remainingPrefix": "Est.",
+      "remainingSuffix_one": "day remaining",
+      "remainingSuffix_other": "days remaining"
+    },
+    "labels": {
+      "start": "Day 1",
+      "ovulation": "Ovulation",
+      "endPrefix": "Day",
+      "endSuffix": ""
+    },
+    "tooltips": {
+      "fertileWindow": "Predicted Fertile Window",
+      "ovulationPrefix": "Predicted Ovulation: Day"
+    }
+  },
+  "statusCard": {
+    "mainText": {
+      "daysLeft_one": "{count} day",
+      "daysLeft_other": "{count} days",
+      "periodExpected": "Period Expected"
+    },
+    "subtitle": {
+      "daysLeft": "until next period",
+      "dueToday": "Due today",
+      "overdue_one": "{count} day overdue",
+      "overdue_other": "{count} days overdue"
+    }
+  }
+}
