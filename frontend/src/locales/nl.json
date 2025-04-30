@@ -1,90 +1,132 @@
 {
   "common": {
+    "title": "Period tracker",
     "login": "Inloggen",
     "register": "Registreren",
-    "days": "dagen",
-    "day": "dag",
+    "day": "dag | dagen",
+    "dayN": "{count} dag | {count} dagen",
     "loading": "Laden...",
     "error": "Fout",
     "notAvailable": "N.v.t.",
     "dates": {
-      "invalid": "Ongeldige Datum",
+      "invalid": "Ongeldige datum",
       "error": "Fout"
     }
   },
   "homepage": {
     "hero": {
-      "title": "Begrijp Je Cyclus,",
-      "titleHighlight": "Versterk Je Leven.",
-      "subtitle": "Volg je menstruatie, voorspel vruchtbare periodes, krijg inzicht in jouw unieke patronen en synchroniseer moeiteloos met het natuurlijke ritme van je lichaam.",
+      "title": "Begrijp je cyclus,",
+      "titleHighlight": "Versterk je leven.",
+      "subtitle": "Houd je menstruatie bij, voorspel vruchtbare periodes, krijg inzicht in jouw unieke patronen en synchroniseer moeiteloos met het natuurlijke ritme van je lichaam.",
       "buttons": {
-        "register": "Start Gratis Met Volgen"
+        "register": "Start gratis met tracken"
       }
     },
     "features": {
-      "title": "Alles Wat Je Nodig Hebt",
+      "title": "Alles wat je nodig hebt",
       "subtitle": "Van eenvoudig loggen tot krachtige inzichten, wij helpen je.",
       "cards": {
         "tracking": {
-          "title": "Moeiteloos Volgen",
-          "description": "Log snel de start- en einddatums van je menstruatie. Simpel en intuïtief."
+          "title": "Moeiteloos tracken",
+          "description": "Log snel de start- en einddatum van je menstruatie. Eenvoudig en intuïtief."
         },
         "predictions": {
-          "title": "Slimme Voorspellingen",
+          "title": "Slimme voorspellingen",
           "description": "Bekijk je voorspelde vruchtbare periode, ovulatiedag en volgende menstruatie."
         },
         "insights": {
-          "title": "Persoonlijke Inzichten",
-          "description": "Ontdek je gemiddelde cyclusduur, menstruatieduur en unieke patronen."
+          "title": "Gepersonaliseerde inzichten",
+          "description": "Ontdek je gemiddelde cycluslengte, menstruatieduur en unieke patronen."
         }
       }
     },
     "benefits": {
-      "title": "Maak Verbinding Met Je Lichaam",
-      "subtitle": "Ga verder dan alleen volgen. Begrijp het 'waarom' achter je cyclus.",
+      "title": "Maak verbinding met je lichaam",
+      "subtitle": "Ga verder dan alleen tracken. Begrijp het 'waarom' achter je cyclus.",
       "items": {
         "plan": {
-          "title": "Plan Vooruit Met Vertrouwen",
-          "description": "Weet wanneer je je menstruatie en vruchtbare dagen kunt verwachten, wat het plannen van evenementen, reizen of intimiteit vergemakkelijkt."
+          "title": "Plan vooruit met vertrouwen",
+          "description": "Weet wanneer je je menstruatie en vruchtbare dagen kunt verwachten, zodat je gemakkelijker evenementen, reizen of intimiteit kunt plannen."
         },
         "wellbeing": {
-          "title": "Stem Af Op Je Welzijn",
-          "description": "Merk patronen op in je energie, stemming en fysieke symptomen gedurende je cyclus om je algehele gezondheid beter te ondersteunen."
+          "title": "Stem af op je welzijn",
+          "description": "Merk patronen op in je energie, stemming en fysieke symptomen tijdens je cyclus om je algehele gezondheid beter te ondersteunen."
         }
       }
     },
     "peek": {
-      "title": "Simpel, Visueel, Inzichtelijk",
+      "title": "Eenvoudig, Visueel, Inzichtelijk",
       "subtitle": "Krijg in één oogopslag een duidelijk beeld van je cyclus met ons intuïtieve dashboard."
     },
     "cta": {
-      "title": "Klaar om Jouw Ritme te Ontdekken?",
+      "title": "Klaar om je ritme te ontdekken?",
       "subtitle": "Sluit je aan bij duizenden vrouwen die controle nemen over hun cyclusgezondheid. Het is gratis!",
       "buttons": {
-        "register": "Meld Je Nu Aan",
-        "dashboard": "Bekijk Je Dashboard"
+        "register": "Meld je nu aan",
+        "dashboard": "Bekijk je dashboard"
       }
     }
   },
   "login": {
     "title": "Inloggen",
-    "usernameOrEmail": "Gebruikersnaam of E-mailadres",
+    "usernameOrEmail": "Gebruikersnaam of e-mailadres",
     "password": "Wachtwoord",
     "loggingIn": "Inloggen...",
-    "needAccount": "Account nodig? Registreer"
+    "needAccount": "Account nodig? Registreren"
   },
   "registerPage": {
     "title": "Registreren",
     "username": "Gebruikersnaam",
     "email": "E-mailadres",
     "password": "Wachtwoord",
-    "confirmPassword": "Bevestig Wachtwoord",
+    "confirmPassword": "Bevestig wachtwoord",
     "registering": "Registreren...",
-    "alreadyHaveAccount": "Heb je al een account? Log in"
+    "alreadyHaveAccount": "Heb je al een account? Inloggen"
+  },
+  "accountPage": {
+    "title": "Mijn account",
+    "userInfo": {
+      "title": "Gebruikersinformatie",
+      "loading": "Gebruikersgegevens laden...",
+      "username": "Gebruikersnaam:",
+      "email": "E-mailadres:",
+      "memberSince": "Lid sinds:",
+      "notAvailable": "N.v.t.",
+      "error": "Kon gebruikersgegevens niet laden. Probeer het later opnieuw."
+    },
+    "changePassword": {
+      "title": "Wachtwoord wijzigen",
+      "currentPasswordLabel": "Huidig wachtwoord:",
+      "newPasswordLabel": "Nieuw wachtwoord:",
+      "confirmNewPasswordLabel": "Bevestig nieuw wachtwoord:",
+      "passwordMismatch": "Nieuwe wachtwoorden komen niet overeen.",
+      "changeButton": "Wachtwoord wijzigen",
+      "changing": "Bezig met wijzigen...",
+      "success": "Wachtwoord succesvol gewijzigd!",
+      "error": "Wachtwoord wijzigen mislukt. Controleer je huidige wachtwoord."
+    },
+    "logout": {
+      "title": "Uitloggen",
+      "description": "Log uit van je huidige sessie.",
+      "logoutButton": "Uitloggen",
+      "loggingOut": "Uitloggen...",
+      "error": "Uitloggen mislukt. Probeer het opnieuw."
+    },
+    "dangerZone": {
+      "title": "Gevarenzone",
+      "description": "Het verwijderen van je account is permanent en kan niet ongedaan worden gemaakt. Al je gegevens, inclusief cyclusgeschiedenis en inzichten, gaan permanent verloren.",
+      "deleteButton": "Verwijder mijn account",
+      "confirmDeleteTitle": "Bevestig verwijdering",
+      "confirmDeleteMessage": "Weet je absoluut zeker dat je je account wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "confirmDeleteConfirm": "Ja, verwijderen",
+      "confirmDeleteCancel": "Nee, behouden",
+      "deleteError": "Account verwijderen mislukt. Probeer het opnieuw.",
+      "deleting": "Verwijderen..."
+    }
   },
   "dashboard": {
     "loader": {
-      "message": "Je dashboard wordt geladen..."
+      "message": "Je dashboard laden..."
     },
     "error": {
       "title": "Oeps!",
@@ -92,90 +134,110 @@
     },
     "newUser": {
       "title": "Welkom! Laten we beginnen",
-      "subtitle": "Log je eerste menstruatie om gepersonaliseerde cyclusinzichten, voorspellingen en meer te ontgrendelen.",
-      "button": "Start eerste menstruatie"
+      "subtitle": "Start je eerste menstruatie om gepersonaliseerde cyclusinzichten, voorspellingen en meer te ontgrendelen.",
+      "button": "Eerste menstruatie starten"
     },
     "sections": {
       "currentCycle": {
-        "title": "Huidige Cyclus"
+        "title": "Huidige cyclus"
       },
       "insights": {
-        "title": "Jouw Inzichten"
+        "title": "Jouw inzichten"
       },
       "logHistory": {
-        "recordTitle": "Menstruaties Loggen",
-        "historyTitle": "Jouw Menstruatiegeschiedenis"
+        "recordTitle": "Menstruaties vastleggen",
+        "historyTitle": "Jouw menstruatiegeschiedenis"
       }
+    },
+    "insightsCards": {
+      "averagePeriodDuration": "Gemiddelde menstruatieduur",
+      "averageCycleLength": "Gemiddelde cycluslengte",
+      "totalPeriodsLogged": "Menstruaties gelogd",
+      "longestPeriod": "Langste menstruatie",
+      "shortestPeriod": "Kortste menstruatie"
+    },
+    "insightsDescriptions": {
+      "averagePeriodDuration": "Gebaseerd op voltooide menstruaties",
+      "averageCycleLength": "Startdatum tot volgende startdatum",
+      "totalPeriodsLogged": "Aantal vastgelegde menstruaties",
+      "longestPeriod": "Langste vastgelegde menstruatie",
+      "shortestPeriod": "Kortste vastgelegde menstruatie"
     }
   },
   "periodForm": {
     "recordNew": {
-      "title": "Nieuwe Menstruatie Loggen",
+      "title": "Nieuwe menstruatie starten",
       "startDateLabel": "Startdatum:",
-      "button": "Log Start"
+      "button": "Start menstruatie"
     },
     "endCurrent": {
-      "title": "Huidige Menstruatie Beëindigen",
+      "title": "Huidige menstruatie beëindigen",
       "startedOnPrefix": "Huidige menstruatie gestart op:",
       "endDateLabel": "Einddatum:",
-      "button": "Log Einde"
+      "button": "Einde vastleggen"
     },
     "errors": {
-      "endDateBeforeStart": "Einddatum kan niet vóór de startdatum liggen."
+      "endDateBeforeStart": "Einddatum kan niet voor de startdatum liggen."
     }
   },
   "fertileWindowCard": {
-    "title": "Vruchtbare Periode",
+    "title": "Vruchtbare periode",
     "statusLabels": {
       "ovulation": "Ovulatiedag",
-      "fertile": "Vruchtbare Periode",
-      "low": "Lage Vruchtbaarheid"
+      "fertile": "Vruchtbare periode",
+      "low": "Lage vruchtbaarheid"
     },
     "statusText": {
       "ovulation": "Op basis van je gegevens lijkt vandaag je voorspelde {emphasis} te zijn.",
-      "fertile": "Je bent nu waarschijnlijk in je {emphasis}.",
-      "low": "Momenteel voorspeld als {emphasis} je vruchtbare periode."
+      "fertile": "Je bent waarschijnlijk nu in je {emphasis}.",
+      "low": "Momenteel voorspeld {emphasis} je vruchtbare periode te zijn."
     },
     "statusEmphasis": {
-      "ovulationDay": "ovulatiedag",
-      "fertileWindow": "vruchtbare periode",
-      "outside": "buiten"
+      "ovulation": "ovulatiedag",
+      "fertile": "vruchtbare periode",
+      "low": "buiten"
     },
     "dateLabels": {
-      "fertileWindow": "Voorspelde Vruchtbare Dagen:",
-      "ovulation": "Voorspelde Ovulatie:"
+      "fertileWindow": "Voorspelde vruchtbare dagen:",
+      "ovulation": "Voorspelde ovulatie:"
     }
   },
   "cycleProgressBar": {
     "title": {
-      "dayPrefix": "Dag",
-      "daySeparator": "van",
-      "remainingPrefix": "Nog ong.",
-      "remainingSuffix_one": "dag",
-      "remainingSuffix_other": "dagen"
+      "dayOf": "Dag {0} van {1}",
+      "remaining": "Ong. {count} dag resterend | Ong. {count} dagen resterend"
     },
     "labels": {
       "start": "Dag 1",
       "ovulation": "Ovulatie",
-      "endPrefix": "Dag",
-      "endSuffix": ""
+      "end": "Dag {number}"
     },
     "tooltips": {
-      "fertileWindow": "Voorspelde Vruchtbare Periode",
-      "ovulationPrefix": "Voorspelde Ovulatie: Dag"
+      "fertileWindow": "Voorspelde vruchtbare periode",
+      "ovulationPrefix": "Voorspelde ovulatie: Dag {number}"
     }
   },
   "statusCard": {
     "mainText": {
-      "daysLeft_one": "{count} dag",
-      "daysLeft_other": "{count} dagen",
-      "periodExpected": "Menstruatie Verwacht"
+      "daysOngoing": "bezig",
+      "periodExpected": "Menstruatie verwacht"
     },
     "subtitle": {
       "daysLeft": "tot volgende menstruatie",
       "dueToday": "Vandaag verwacht",
-      "overdue_one": "{count} dag over tijd",
-      "overdue_other": "{count} dagen over tijd"
-    }
+      "overdue": "over tijd"
+    },
+    "periodStarted": "Menstruatie gestart:"
+  },
+  "periodList": {
+    "duration": "Duur:",
+    "delete": "Verwijderen",
+    "noPeriods": "Nog geen menstruaties vastgelegd."
+  },
+  "confirmationModal": {
+    "title": "Bevestig actie",
+    "message": "Weet je zeker dat je verder wilt gaan?",
+    "confirmText": "Bevestig",
+    "cancelText": "Cancel"
   }
 }

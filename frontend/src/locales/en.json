@@ -3,53 +3,53 @@
     "title": "Period tracker",
     "login": "Login",
     "register": "Register",
-    "days": "days",
-    "day": "day",
+    "day": "day | days",
+    "dayN": "{count} day | {count} days",
     "loading": "Loading...",
     "error": "Error",
     "notAvailable": "N/A",
     "dates": {
-      "invalid": "Invalid Date",
+      "invalid": "Invalid date",
       "error": "Error"
     }
   },
   "homepage": {
     "hero": {
-      "title": "Understand Your Cycle,",
-      "titleHighlight": "Empower Your Life.",
+      "title": "Understand your cycle,",
+      "titleHighlight": "Empower your life.",
       "subtitle": "Track your period, predict fertile windows, gain insights into your unique patterns, and sync with your body's natural rhythm effortlessly.",
       "buttons": {
-        "register": "Start Tracking for Free"
+        "register": "Start tracking for free"
       }
     },
     "features": {
-      "title": "Everything You Need",
+      "title": "Everything you need",
       "subtitle": "From simple logging to powerful insights, we've got you covered.",
       "cards": {
         "tracking": {
-          "title": "Effortless Tracking",
+          "title": "Effortless tracking",
           "description": "Quickly log your period start and end dates. Simple and intuitive."
         },
         "predictions": {
-          "title": "Smart Predictions",
+          "title": "Smart predictions",
           "description": "See your predicted fertile window, ovulation day, and next period."
         },
         "insights": {
-          "title": "Personalized Insights",
+          "title": "Personalized insights",
           "description": "Discover your average cycle length, period duration, and unique patterns."
         }
       }
     },
     "benefits": {
-      "title": "Connect With Your Body",
+      "title": "Connect with your body",
       "subtitle": "Go beyond tracking. Understand the 'why' behind your cycle.",
       "items": {
         "plan": {
-          "title": "Plan Ahead with Confidence",
+          "title": "Plan ahead with confidence",
           "description": "Know when to expect your period and fertile days, making it easier to plan events, trips, or intimacy."
         },
         "wellbeing": {
-          "title": "Tune Into Your Wellbeing",
+          "title": "Tune into your wellbeing",
           "description": "Notice patterns in your energy, mood, and physical symptoms throughout your cycle to better support your overall health."
         }
       }
@@ -59,19 +59,19 @@
       "subtitle": "Get a clear view of your cycle at a glance with our intuitive dashboard."
     },
     "cta": {
-      "title": "Ready to Discover Your Rhythm?",
+      "title": "Ready to discover your rhythm?",
       "subtitle": "Join thousands of women taking control of their cycle health. It's free!",
       "buttons": {
-        "register": "Sign Up Now",
-        "dashboard": "View Your Dashboard"
+        "register": "Sign up now",
+        "dashboard": "View your dashboard"
       }
     }
   },
   "login": {
     "title": "Login",
-    "usernameOrEmail": "Username or Email",
+    "usernameOrEmail": "Username or e-mail",
     "password": "Password",
-    "loggingIn": "Logging In...",
+    "loggingIn": "Logging in...",
     "needAccount": "Need an account? Register"
   },
   "registerPage": {
@@ -79,9 +79,50 @@
     "username": "Username",
     "email": "Email",
     "password": "Password",
-    "confirmPassword": "Confirm Password",
+    "confirmPassword": "Confirm password",
     "registering": "Registering...",
     "alreadyHaveAccount": "Already have an account? Login"
+  },
+  "accountPage": {
+    "title": "My account",
+    "userInfo": {
+      "title": "User information",
+      "loading": "Loading user data...",
+      "username": "Username:",
+      "email": "Email:",
+      "memberSince": "Member since:",
+      "notAvailable": "N/A",
+      "error": "Could not load user data. Please try again later."
+    },
+    "changePassword": {
+      "title": "Change password",
+      "currentPasswordLabel": "Current password:",
+      "newPasswordLabel": "New password:",
+      "confirmNewPasswordLabel": "Confirm new password:",
+      "passwordMismatch": "New passwords do not match.",
+      "changeButton": "Change password",
+      "changing": "Changing...",
+      "success": "Password changed successfully!",
+      "error": "Failed to change password. Please check your current password."
+    },
+    "logout": {
+      "title": "Logout",
+      "description": "Log out from your current session.",
+      "logoutButton": "Logout",
+      "loggingOut": "Logging out...",
+      "error": "Logout failed. Please try again."
+    },
+    "dangerZone": {
+      "title": "Danger zone",
+      "description": "Deleting your account is permanent and cannot be undone. All your data, including cycle history and insights, will be permanently lost.",
+      "deleteButton": "Delete my account",
+      "confirmDeleteTitle": "Confirm deletion",
+      "confirmDeleteMessage": "Are you absolutely sure you want to delete your account? This action cannot be undone.",
+      "confirmDeleteConfirm": "Yes, Delete",
+      "confirmDeleteCancel": "No, keep it",
+      "deleteError": "Failed to delete account. Please try again.",
+      "deleting": "Deleting..."
+    }
   },
   "dashboard": {
     "loader": {
@@ -92,45 +133,59 @@
       "refreshHint": "Please try refreshing."
     },
     "newUser": {
-      "title": "Welcome! Let's Get Started",
+      "title": "Welcome! Let's get started",
       "subtitle": "Log your first period to unlock personalized cycle insights, predictions, and more.",
-      "button": "Log First Period"
+      "button": "Log first period"
     },
     "sections": {
       "currentCycle": {
-        "title": "Current Cycle"
+        "title": "Current cycle"
       },
       "insights": {
-        "title": "Your Insights"
+        "title": "Your insights"
       },
       "logHistory": {
-        "recordTitle": "Record Periods",
-        "historyTitle": "Your Period History"
+        "recordTitle": "Record periods",
+        "historyTitle": "Your period history"
       }
+    },
+    "insightsCards": {
+      "averagePeriodDuration": "Average period duration",
+      "averageCycleLength": "Average cycle length",
+      "totalPeriodsLogged": "Periods logged",
+      "longestPeriod": "Longest period",
+      "shortestPeriod": "Shortest period"
+    },
+    "insightsDescriptions": {
+      "averagePeriodDuration": "Based on completed periods",
+      "averageCycleLength": "Start date to next start date",
+      "totalPeriodsLogged": "Number of recorded periods",
+      "longestPeriod": "Longest recorded period",
+      "shortestPeriod": "Shortest recorded period"
     }
   },
   "periodForm": {
     "recordNew": {
-      "title": "Record New Period",
-      "startDateLabel": "Start Date:",
-      "button": "Record Start"
+      "title": "Record new Period",
+      "startDateLabel": "Start date:",
+      "button": "Record start"
     },
     "endCurrent": {
-      "title": "End Current Period",
+      "title": "End current period",
       "startedOnPrefix": "Current period started on:",
-      "endDateLabel": "End Date:",
-      "button": "Record End"
+      "endDateLabel": "End date:",
+      "button": "Record end"
     },
     "errors": {
       "endDateBeforeStart": "End date cannot be before the start date."
     }
   },
   "fertileWindowCard": {
-    "title": "Fertile Window",
+    "title": "Fertile window",
     "statusLabels": {
-      "ovulation": "Ovulation Day",
-      "fertile": "Fertile Window",
-      "low": "Low Fertility"
+      "ovulation": "Ovulation day",
+      "fertile": "Fertile window",
+      "low": "Low fertility"
     },
     "statusText": {
       "ovulation": "Based on your data, today looks like your predicted {emphasis}.",
@@ -138,45 +193,51 @@
       "low": "Currently predicted to be {emphasis} your fertile window."
     },
     "statusEmphasis": {
-      "ovulationDay": "ovulation day",
-      "fertileWindow": "fertile window",
-      "outside": "outside"
+      "ovulation": "ovulation day",
+      "fertile": "fertile window",
+      "low": "outside"
     },
     "dateLabels": {
-      "fertileWindow": "Predicted Fertile Days:",
-      "ovulation": "Predicted Ovulation:"
+      "fertileWindow": "Predicted fertile days:",
+      "ovulation": "Predicted ovulation:"
     }
   },
   "cycleProgressBar": {
     "title": {
-      "dayPrefix": "Day",
-      "daySeparator": "of",
-      "remainingPrefix": "Est.",
-      "remainingSuffix_one": "day remaining",
-      "remainingSuffix_other": "days remaining"
+      "dayOf": "Day {0} of {1}",
+      "remaining": "Est. {count} day remaining | Est. {count} days remaining"
     },
     "labels": {
       "start": "Day 1",
       "ovulation": "Ovulation",
-      "endPrefix": "Day",
-      "endSuffix": ""
+      "end": "Day {number}"
     },
     "tooltips": {
-      "fertileWindow": "Predicted Fertile Window",
-      "ovulationPrefix": "Predicted Ovulation: Day"
+      "fertileWindow": "Predicted fertile Window",
+      "ovulationPrefix": "Predicted ovulation: Day {number}"
     }
   },
   "statusCard": {
     "mainText": {
-      "daysLeft_one": "{count} day",
-      "daysLeft_other": "{count} days",
-      "periodExpected": "Period Expected"
+      "daysOngoing": "ongoing",
+      "periodExpected": "Period expected"
     },
     "subtitle": {
       "daysLeft": "until next period",
       "dueToday": "Due today",
-      "overdue_one": "{count} day overdue",
-      "overdue_other": "{count} days overdue"
-    }
+      "overdue": "overdue"
+    },
+    "periodStarted": "Period started:"
+  },
+  "periodList": {
+    "duration": "Duration:",
+    "delete": "Delete",
+    "noPeriods": "No periods recorded yet."
+  },
+  "confirmationModal": {
+    "title": "Confirm action",
+    "message": "Are you sure you want to proceed?",
+    "confirmText": "Confirm",
+    "cancelText": "Cancel"
   }
 }

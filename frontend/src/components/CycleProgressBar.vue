@@ -2,13 +2,14 @@
 import { useReportsStore } from '@/stores/reports';
 import { computed } from 'vue';
 import { differenceInDays, parseISO, isValid, startOfDay, subDays } from 'date-fns';
-// Import SparklesIcon
-import { SparklesIcon } from '@heroicons/vue/24/solid'; // Or use '/solid' if you prefer
+import { SparklesIcon } from '@heroicons/vue/24/solid';
+import { useI18n } from 'vue-i18n';
 
 const store = useReportsStore();
+const { t } = useI18n();
 
 // --- Date and Phase Calculations ---
-const currentDate = computed(() => startOfDay(new Date())); // Use current date from system
+const currentDate = computed(() => startOfDay(new Date()));
 
 const cycleStartDate = computed(() => {
   // Calculate start date based on current date and cycle day
@@ -93,11 +94,10 @@ const progressPercentDisplay = computed(() => store.cycleContext?.progress_perce
     <div v-else class="space-y-2">
       <div class="flex justify-between items-center gap-2">
         <span class="text-sm font-medium text-gray-700 flex-shrink-0">
-          Day {{ store.cycleContext.cycle_day }}
-          <span class="text-gray-500">of {{ cycleLengthDisplay }}</span>
+          {{ t('cycleProgressBar.title.dayOf', [store.cycleContext.cycle_day, cycleLengthDisplay]) }}
         </span>
         <span v-if="store.cycleContext.days_until_next_period !== null" class="text-sm text-gray-500 text-right flex-shrink overflow-hidden whitespace-nowrap text-ellipsis">
-          Est. {{ store.cycleContext.days_until_next_period }} days remaining
+          {{ t('cycleProgressBar.title.remaining', store.cycleContext.days_until_next_period) }}
         </span>
       </div>
 
@@ -108,7 +108,7 @@ const progressPercentDisplay = computed(() => store.cycleContext?.progress_perce
               class="absolute top-0 bottom-0 h-full rounded-md"
               :class="[store.cycleContext?.isInFertileWindow ? 'bg-primary-200' : 'bg-primary-100']"
               :style="{ left: `${fertileStartPercent}%`, width: `${fertileWindowWidthPercent}%` }"
-              title="Predicted Fertile Window"
+              :title="t('cycleProgressBar.tooltips.fertileWindow')"
           ></div>
           <div
               class="absolute top-0 bottom-0 left-0 h-full bg-primary rounded-full transition-all duration-500 ease-out z-10"
@@ -120,24 +120,24 @@ const progressPercentDisplay = computed(() => store.cycleContext?.progress_perce
             v-if="ovulationPercent !== null"
             class="absolute bottom-0 transform -translate-x-1/2 translate-y-[calc(50%+1px)] z-20"
             :style="{ left: `${ovulationPercent}%` }"
-            :title="`Predicted Ovulation: Day ${ovulationDayNumber}`"
+            :title="t('cycleProgressBar.tooltips.ovulationPrefix', ovulationDayNumber)"
         >
           <SparklesIcon class="h-3.5 w-3.5 text-primary" aria-hidden="true" />
         </div>
       </div>
 
       <div class="relative flex justify-between text-xs text-gray-500 h-4">
-        <span>Day 1</span>
+        <span>{{ t('cycleProgressBar.labels.start') }}</span>
 
         <span
             v-if="ovulationPercent !== null && ovulationDayNumber"
             class="absolute transform -translate-x-1/2 text-primary font-medium whitespace-nowrap"
             :style="{ left: `${ovulationPercent}%` }"
         >
-            Ovulation
+            {{ t('cycleProgressBar.labels.ovulation') }}
         </span>
 
-        <span>Day {{ cycleLengthDisplay }}</span>
+        <span>{{ t('cycleProgressBar.labels.end', {number: cycleLengthDisplay})}}</span>
       </div>
     </div>
   </div>

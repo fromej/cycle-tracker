@@ -2,6 +2,9 @@
 import {ref, computed, onMounted} from 'vue';
 import { usePeriodsStore } from '@/stores/periods';
 import getTodayDateString from "@/utils/dateUtils.ts";
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const periodsStore = usePeriodsStore();
 
@@ -26,7 +29,7 @@ const handleCreatePeriod = async () => {
 const handleUpdatePeriod = async () => {
   if (currentOpenPeriod.value && currentPeriodEndDate.value) {
     if (new Date(currentPeriodEndDate.value) < new Date(currentOpenPeriod.value.start_date)) {
-      periodsStore.setError('End date cannot be before the start date.'); // Use setter if available
+      periodsStore.setError(t('periodForm.errors.endDateBeforeStart')); // Use setter if available
       return;
     }
     await periodsStore.updatePeriod(currentOpenPeriod.value.id, currentPeriodEndDate.value);
@@ -49,10 +52,10 @@ onMounted(() => {
 <template>
   <div class="space-y-6">
     <div>
-      <h3 class="text-lg font-semibold text-primary mb-4">Record New Period</h3>
+      <h3 class="text-lg font-semibold text-primary mb-4">{{ $t('periodForm.recordNew.title') }}</h3>
       <div class="flex flex-col sm:flex-row sm:items-end sm:gap-4 space-y-3 sm:space-y-0">
         <div class="flex-grow">
-          <label for="start_date" class="block text-sm font-medium text-gray-600 mb-1.5">Start Date:</label>
+          <label for="start_date" class="block text-sm font-medium text-gray-600 mb-1.5">{{ $t('periodForm.recordNew.startDateLabel') }}</label>
           <input
               type="date"
               id="start_date"
@@ -66,20 +69,20 @@ onMounted(() => {
             :disabled="periodsStore.loading || !newPeriodStartDate"
             class="btn btn-primary"
         >
-          Record Start
+          {{ $t('periodForm.recordNew.button') }}
         </button>
       </div>
     </div>
 
     <div v-if="currentOpenPeriod" class="border-t border-gray-100 pt-6">
-      <h3 class="text-lg font-semibold text-primary mb-4">End Current Period</h3>
+      <h3 class="text-lg font-semibold text-primary mb-4">{{ $t('periodForm.endCurrent.title') }}</h3>
       <p class="text-sm text-gray-600 mb-4">
-        Current period started on:
+        {{ $t('periodForm.endCurrent.startedOnPrefix') }}
         <span class="font-medium text-gray-700">{{ currentOpenPeriod.start_date }}</span>
       </p>
       <div class="flex flex-col sm:flex-row sm:items-end sm:gap-4 space-y-3 sm:space-y-0">
         <div class="flex-grow">
-          <label for="end_date" class="block text-sm font-medium text-gray-600 mb-1.5">End Date:</label>
+          <label for="end_date" class="block text-sm font-medium text-gray-600 mb-1.5">{{ $t('periodForm.endCurrent.endDateLabel') }}</label>
           <input
               type="date"
               id="end_date"
@@ -94,7 +97,7 @@ onMounted(() => {
             :disabled="periodsStore.loading || !currentOpenPeriod || !currentPeriodEndDate"
             class="btn btn-primary"
         >
-          Record End
+          {{ $t('periodForm.endCurrent.button') }}
         </button>
       </div>
     </div>

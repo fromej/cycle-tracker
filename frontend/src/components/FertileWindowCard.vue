@@ -5,7 +5,7 @@
         <div class="flex items-center space-x-2">
           <component :is="statusIcon.icon" :class="['h-6 w-6', statusIcon.colorClass]" aria-hidden="true" />
           <h2 class="text-xl font-semibold text-gray-800" id="fertility-card-title">
-            Fertile Window
+            {{ $t('fertileWindowCard.title') }}
           </h2>
         </div>
         <span
@@ -16,25 +16,31 @@
         </span>
       </div>
       <div class="mt-1 mb-4 text-gray-700 leading-relaxed">
-        <p v-if="isTodayOvulation">
-          Based on your data, today looks like your predicted <strong class="font-semibold text-primary">ovulation day</strong>.
-        </p>
-        <p v-else-if="isInFertileWindow">
-          You're likely in your <strong class="font-semibold text-primary">fertile window</strong> right now.
-        </p>
-        <p v-else>
-          Currently predicted to be <strong class="font-semibold text-gray-600">outside</strong> your fertile window.
-        </p>
+        <i18n-t keypath="fertileWindowCard.statusText.ovulation" tag="p" v-if="isTodayOvulation">
+          <template #emphasis>
+            <b>{{ $t('fertileWindowCard.statusEmphasis.ovulation') }}</b>
+          </template>
+        </i18n-t>
+        <i18n-t keypath="fertileWindowCard.statusText.fertile" tag="p" v-else-if="isInFertileWindow">
+          <template #emphasis>
+            <b>{{ $t('fertileWindowCard.statusEmphasis.fertile') }}</b>
+          </template>
+        </i18n-t>
+        <i18n-t keypath="fertileWindowCard.statusText.low" tag="p" v-else>
+          <template #emphasis>
+            <b>{{ $t('fertileWindowCard.statusEmphasis.low') }}</b>
+          </template>
+        </i18n-t>
       </div>
     </div>
 
     <div class="mt-4 space-y-1 text-sm text-gray-500 border-t border-gray-100 pt-4">
       <p>
-        <span class="font-medium text-gray-600">Predicted Fertile Days:</span>
+        <span class="font-medium text-gray-600">{{ $t('fertileWindowCard.dateLabels.fertileWindow') }}</span>
         <span class="block sm:inline ml-1">{{ formatDate(fertileStart) }} - {{ formatDate(fertileEnd) }}</span>
       </p>
       <p>
-        <span class="font-medium text-gray-600">Predicted Ovulation:</span>
+        <span class="font-medium text-gray-600">{{ $t('fertileWindowCard.dateLabels.ovulation') }}</span>
         <span class="ml-1">{{ formatDate(ovulationDate) }}</span>
       </p>
     </div>
@@ -45,6 +51,9 @@
 import { computed } from 'vue';
 import { format, parseISO, isValid } from 'date-fns';
 import { SparklesIcon, SunIcon, CheckCircleIcon } from '@heroicons/vue/24/outline';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps<{
   fertileStart: string | null;
@@ -56,18 +65,18 @@ const props = defineProps<{
 
 // Improved Date Formatting with Validation
 const formatDate = (dateStr: string | null): string => {
-  if (!dateStr) return 'N/A'; // Handle null/undefined
+  if (!dateStr) return t('common.notAvailable'); // Handle null/undefined
   try {
     const date = parseISO(dateStr);
     if (!isValid(date)) { // Check if parsing was successful
       console.warn(`Invalid date string received: ${dateStr}`);
-      return 'Invalid Date';
+      return t('common.dates.invalid');
     }
     // Format Example: Apr 27, 2025 (Adjust format string as needed)
     return format(date, 'MMM d, yyyy');
   } catch (error) {
     console.error(`Error parsing date: ${dateStr}`, error);
-    return 'Error';
+    return t('common.error');
   }
 };
 
@@ -75,7 +84,7 @@ const formatDate = (dateStr: string | null): string => {
 const statusInfo = computed(() => {
   if (props.isTodayOvulation) {
     return {
-      label: 'Ovulation Day',
+      label: t('fertileWindowCard.statusLabels.ovulation'),
       icon: SparklesIcon, // Or FireIcon, StarIcon
       iconColorClass: 'text-purple-600', // Use a distinct color for ovulation
       badgeClass: 'bg-purple-100 text-purple-700 ring-1 ring-inset ring-purple-200',
@@ -83,14 +92,14 @@ const statusInfo = computed(() => {
   }
   if (props.isInFertileWindow) {
     return {
-      label: 'Fertile Window',
+      label: t('fertileWindowCard.statusLabels.fertile'),
       icon: SunIcon, // Or CalendarDaysIcon
       iconColorClass: 'text-primary', // Use primary theme color
       badgeClass: 'bg-primary-100 text-primary-700 ring-1 ring-inset ring-primary-200', // Assumes primary-100, primary-700, primary-200 exist
     };
   }
   return {
-    label: 'Low Fertility', // Changed from "Not Fertile" for softer language
+    label: t('fertileWindowCard.statusLabels.low'), // Changed from "Not Fertile" for softer language
     icon: CheckCircleIcon, // Or ShieldCheckIcon
     iconColorClass: 'text-gray-500',
     badgeClass: 'bg-gray-100 text-gray-700 ring-1 ring-inset ring-gray-200',

@@ -5,9 +5,11 @@
         <img src="/assets/icons/180.png" alt="Period Tracker" class="nav-image">
         {{ $t('common.title')}}
       </router-link>
-      <div class="flex">
-          <router-link :to="{ name: 'login' }" class="mr-2 hover:underline">{{ $t('common.login')}}</router-link>
+      <div class="flex items-center gap-2">
+          <router-link :to="{ name: 'login' }" class="hover:underline">{{ $t('common.login')}}</router-link>
           <router-link :to="{ name: 'register' }" class="hover:underline">{{ $t('common.register')}}</router-link>
+
+        <LanguagePicker/>
       </div>
     </div>
   </nav>
@@ -16,6 +18,7 @@
 <script setup>
 import { useAuthStore } from '@/stores/auth';
 import { computed } from 'vue';
+import LanguagePicker from "@/components/LanguagePicker.vue";
 
 const authStore = useAuthStore();
 const isAuthenticated = computed(() => authStore.isAuthenticated);

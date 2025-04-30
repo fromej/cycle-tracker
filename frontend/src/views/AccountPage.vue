@@ -2,37 +2,38 @@
   <div class="container mx-auto px-4 py-8">
     <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md space-y-8">
 
-      <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">My Account</h2>
+      <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">{{ $t('accountPage.title') }}</h2>
 
       <section aria-labelledby="user-info-heading">
-        <h3 id="user-info-heading" class="text-xl font-semibold text-gray-700 border-b pb-2 mb-4">User Information</h3>
+        <h3 id="user-info-heading" class="text-xl font-semibold text-gray-700 border-b pb-2 mb-4">{{ $t('accountPage.userInfo.title') }}</h3>
         <div v-if="authStore.loading && !authStore.user" class="text-center text-gray-500">
-          Loading user data...
+          {{ $t('accountPage.userInfo.loading') }}
         </div>
         <div v-else-if="authStore.user" class="space-y-3">
           <div>
-            <span class="font-medium text-gray-600">Username:</span>
-            <span class="ml-2 text-gray-800">{{ authStore.user.username || 'N/A' }}</span>
+            <span class="font-medium text-gray-600">{{ $t('accountPage.userInfo.username') }}</span>
+            <span class="ml-2 text-gray-800">{{ authStore.user.username || $t('common.notAvailable') }}</span>
           </div>
           <div>
-            <span class="font-medium text-gray-600">Email:</span>
-            <span class="ml-2 text-gray-800">{{ authStore.user.email || 'N/A' }}</span>
+            <span class="font-medium text-gray-600">{{ $t('accountPage.userInfo.email') }}</span>
+            <span class="ml-2 text-gray-800">{{ authStore.user.email || $t('common.notAvailable') }}</span>
           </div>
           <div>
-            <span class="font-medium text-gray-600">Member Since:</span>
+            <span class="font-medium text-gray-600">{{ $t('accountPage.userInfo.memberSince') }}</span>
             <span class="ml-2 text-gray-800">{{ formattedJoinDate }}</span>
           </div>
+          <LanguagePicker/>
         </div>
         <div v-else class="text-center text-red-500">
-          Could not load user data. Please try again later.
+          {{ $t('accountPage.userInfo.error') }}
         </div>
       </section>
 
       <section aria-labelledby="change-password-heading">
-        <h3 id="change-password-heading" class="text-xl font-semibold text-gray-700 border-b pb-2 mb-4">Change Password</h3>
+        <h3 id="change-password-heading" class="text-xl font-semibold text-gray-700 border-b pb-2 mb-4">{{ $t('accountPage.changePassword.title') }}</h3>
         <form @submit.prevent="handleChangePassword" class="space-y-4">
           <div>
-            <label for="currentPassword" class="block text-gray-700 text-sm font-bold mb-2">Current Password:</label>
+            <label for="currentPassword" class="block text-gray-700 text-sm font-bold mb-2">{{ $t('accountPage.changePassword.currentPasswordLabel') }}</label>
             <input
                 type="password"
                 id="currentPassword"
@@ -43,7 +44,7 @@
             >
           </div>
           <div>
-            <label for="newPassword" class="block text-gray-700 text-sm font-bold mb-2">New Password:</label>
+            <label for="newPassword" class="block text-gray-700 text-sm font-bold mb-2">{{ $t('accountPage.changePassword.newPasswordLabel') }}</label>
             <input
                 type="password"
                 id="newPassword"
@@ -53,10 +54,10 @@
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 autocomplete="new-password"
             >
-            <p v-if="passwordMismatch" class="text-red-500 text-xs italic mt-1">New passwords do not match.</p>
+            <p v-if="passwordMismatch" class="text-red-500 text-xs italic mt-1">{{ $t('accountPage.changePassword.passwordMismatch') }}</p>
           </div>
           <div>
-            <label for="confirmNewPassword" class="block text-gray-700 text-sm font-bold mb-2">Confirm New Password:</label>
+            <label for="confirmNewPassword" class="block text-gray-700 text-sm font-bold mb-2">{{ $t('accountPage.changePassword.confirmNewPasswordLabel') }}</label>
             <input
                 type="password"
                 id="confirmNewPassword"
@@ -74,39 +75,39 @@
               :disabled="authStore.loading || passwordMismatch"
               class="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
           >
-            {{ authStore.loading ? 'Changing...' : 'Change Password' }}
+            {{ authStore.loading ? $t('accountPage.changePassword.changing') : $t('accountPage.changePassword.changeButton') }}
           </button>
         </form>
       </section>
 
       <section aria-labelledby="logout-heading">
-        <h3 id="logout-heading" class="text-xl font-semibold text-gray-700 border-b pb-2 mb-4">Logout</h3>
-        <p class="text-gray-600 mb-4">Log out from your current session.</p>
+        <h3 id="logout-heading" class="text-xl font-semibold text-gray-700 border-b pb-2 mb-4">{{ $t('accountPage.logout.title') }}</h3>
+        <p class="text-gray-600 mb-4">{{ $t('accountPage.logout.description') }}</p>
         <button
             @click="handleLogout"
             :disabled="authStore.loading"
             class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
         >
-          {{ authStore.loading ? 'Logging out...' : 'Logout' }}
+          {{ authStore.loading ? $t('accountPage.logout.loggingOut') : $t('accountPage.logout.logoutButton') }}
         </button>
       </section>
 
       <section aria-labelledby="danger-zone-heading" class="border border-red-300 rounded-lg p-6 bg-red-50">
-        <h3 id="danger-zone-heading" class="text-xl font-semibold text-red-700 mb-4">Danger Zone</h3>
-        <p class="text-red-600 mb-4">Deleting your account is permanent and cannot be undone. All your data, including cycle history and insights, will be permanently lost.</p>
+        <h3 id="danger-zone-heading" class="text-xl font-semibold text-red-700 mb-4">{{ $t('accountPage.dangerZone.title') }}</h3>
+        <p class="text-red-600 mb-4">{{ $t('accountPage.dangerZone.description') }}</p>
         <button
             @click="showDeleteConfirmation = true"
             :disabled="authStore.loading"
             class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
         >
-          {{ authStore.loading ? 'Deleting...' : 'Delete My Account' }}
+          {{ authStore.loading ? $t('accountPage.dangerZone.deleting') : $t('accountPage.dangerZone.deleteButton') }}
         </button>
         <ConfirmationModal
             v-model="showDeleteConfirmation"
-            title="Confirm Deletion"
-            message="Are you absolutely sure you want to delete your account? This action cannot be undone."
-            confirm-text="Yes, Delete"
-            cancel-text="No, Keep it"
+            :title="$t('accountPage.dangerZone.confirmDeleteTitle')"
+            :message="$t('accountPage.dangerZone.confirmDeleteMessage')"
+            :confirm-text="$t('accountPage.dangerZone.confirmDeleteConfirm')"
+            :cancel-text="$t('accountPage.dangerZone.confirmDeleteCancel')"
             confirm-button-type="danger"
             @confirm="handleDeleteAccount"
         />
@@ -122,6 +123,7 @@ import { ref, reactive, computed, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth'; // Assuming your store path
 import { useRouter } from 'vue-router';
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import LanguagePicker from "@/components/LanguagePicker.vue";
 
 
 interface PasswordData {

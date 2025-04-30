@@ -11,7 +11,7 @@
             {{ period.start_date }} - {{ period.end_date || 'Ongoing' }}
           </p>
           <p v-if="period.duration !== null" class="text-sm text-gray-600">
-            Duration: {{ period.duration }} days
+            {{ $t('periodList.duration') }} {{ $t('common.dayN', period.duration) }}
           </p>
         </div>
         <div>
@@ -19,12 +19,12 @@
               @click="handleDelete(period.id)"
               class="text-red-500 hover:text-red-700 text-sm"
           >
-            Delete
+            {{ $t('periodList.delete') }}
           </button>
         </div>
       </li>
     </ul>
-    <div v-if="!periodsStore.periods.length && !periodsStore.loading" class="text-center text-gray-500">No periods recorded yet.</div>
+    <div v-if="!periodsStore.periods.length && !periodsStore.loading" class="text-center text-gray-500">{{ $t('periodList.noPeriods') }}</div>
   </div>
 </template>
 
@@ -37,8 +37,8 @@ const periodsStore  = usePeriodsStore();
 const reportStore = useReportsStore();
 
 const handleDelete = async (periodId) => {
-    await periodsStore.deletePeriod(periodId);
-    await reportStore.fetchCycleContext();
+  await periodsStore.deletePeriod(periodId);
+  await reportStore.fetchCycleContext();
 };
 
 onMounted(async () => {

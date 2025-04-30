@@ -86,7 +86,7 @@ class ReportService:
             }
 
         try:
-            avg_length = round(mean(cycle_lengths), 2)
+            avg_length = round(mean(cycle_lengths))
         except StatisticsError:
             avg_length = None
 
