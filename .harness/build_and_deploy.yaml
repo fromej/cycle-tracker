@@ -70,6 +70,7 @@ spec:
                 registry: harness.fromej.nl
                 repo: harness.fromej.nl/homelab/homelab/cycle-tracker
                 tags: ${{ build.commit[:6] }}
+                mtu: 1440
     - name: deploy
       type: ci
       spec:
