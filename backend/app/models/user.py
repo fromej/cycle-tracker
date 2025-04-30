@@ -1,5 +1,6 @@
 from typing import Optional
 
+from sqlalchemy import func
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.extensions import db
@@ -33,7 +34,7 @@ class User(BaseModel):
     @classmethod
     def find_by_username(cls, username: str) -> Optional["User"]:
         """Finds a user by their username."""
-        return cls.query.filter_by(username=username).first()
+        return cls.query.filter(func.lower(User.username) == username.lower()).first()
 
     @classmethod
     def find_by_email(cls, email: str) -> Optional["User"]:

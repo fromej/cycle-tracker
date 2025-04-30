@@ -132,9 +132,14 @@
       "low": "Lage Vruchtbaarheid"
     },
     "statusText": {
-      "ovulation": "Op basis van je gegevens lijkt vandaag je voorspelde <b>ovulatiedag</b> te zijn.",
-      "fertile": "Je bent nu waarschijnlijk in je <b>vruchtbare periode</b>.",
-      "low": "Momenteel voorspeld als <b>buiten</b> je vruchtbare periode."
+      "ovulation": "Op basis van je gegevens lijkt vandaag je voorspelde {emphasis} te zijn.",
+      "fertile": "Je bent nu waarschijnlijk in je {emphasis}.",
+      "low": "Momenteel voorspeld als {emphasis} je vruchtbare periode."
+    },
+    "statusEmphasis": {
+      "ovulationDay": "ovulatiedag",
+      "fertileWindow": "vruchtbare periode",
+      "outside": "buiten"
     },
     "dateLabels": {
       "fertileWindow": "Voorspelde Vruchtbare Dagen:",

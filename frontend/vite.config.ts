@@ -3,6 +3,8 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
 import tailwindcss from '@tailwindcss/vite'
+import path from 'path'
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 
 export default defineConfig({
     plugins: [
@@ -14,6 +16,11 @@ export default defineConfig({
             }
         }),
         tailwindcss(),
+        VueI18nPlugin({
+            /* options */
+            // locale messages resource pre-compile option
+            include: [path.resolve(__dirname, './src/locales/**')]
+        }),
         VitePWA({
             registerType: 'autoUpdate',
             manifest: {
@@ -26,25 +33,25 @@ export default defineConfig({
                 display: 'standalone',
                 icons: [
                     {
-                        src: '@/assets/icons/192.png',
+                        src: '/assets/icons/192.png',
                         sizes: '192x192',
                         type: 'image/png',
                         purpose: 'any'
                     },
                     {
-                        src: '@/assets/icons/512.png',
+                        src: '/assets/icons/512.png',
                         sizes: '512x512',
                         type: 'image/png',
                         purpose: 'any'
                     },
                     {
-                        src: '@/assets/icons/192.png', // Maskable icon
+                        src: '/assets/icons/192.png', // Maskable icon
                         sizes: '192x192',
                         type: 'image/png',
                         purpose: 'maskable'
                     },
                     {
-                        src: '@/assets/icons/512.png', // Maskable icon
+                        src: '/assets/icons/512.png', // Maskable icon
                         sizes: '512x512',
                         type: 'image/png',
                         purpose: 'maskable'
@@ -53,19 +60,19 @@ export default defineConfig({
                 ],
                 screenshots: [
                     {
-                        src: "@/assets/screenshots/desktop.png",
+                        src: "/assets/screenshots/mobile-dashboard.png",
+                        sizes: "375x667",
+                        type: "image/png",
+                        form_factor: "narrow",
+                        label: "Mobile"
+                    },
+                    {
+                        src: "/assets/screenshots/dashboard.png",
                         sizes: "1440x900",
                         type: "image/png",
                         form_factor: "wide",
                         label: "Desktop"
-                    },
-                    // {
-                    //     "src": "mobile_screenshot.png",
-                    //     "sizes": "375x667",
-                    //     "type": "image/png",
-                    //     "form_factor": "narrow",
-                    //     "label": "Mobile"
-                    // }
+                    }
                 ],
             }
         })

@@ -133,9 +133,14 @@
       "low": "Low Fertility"
     },
     "statusText": {
-      "ovulation": "Based on your data, today looks like your predicted <b>ovulation day</b>.",
-      "fertile": "You're likely in your <b>fertile window</b> right now.",
-      "low": "Currently predicted to be <b>outside</b> your fertile window."
+      "ovulation": "Based on your data, today looks like your predicted {emphasis}.",
+      "fertile": "You're likely in your {emphasis} right now.",
+      "low": "Currently predicted to be {emphasis} your fertile window."
+    },
+    "statusEmphasis": {
+      "ovulationDay": "ovulation day",
+      "fertileWindow": "fertile window",
+      "outside": "outside"
     },
     "dateLabels": {
       "fertileWindow": "Predicted Fertile Days:",

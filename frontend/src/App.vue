@@ -1,10 +1,10 @@
 <template>
   <pwa-install
       ref="pwa-install"
-      manifest-url="/manifest.json"
+      manifest-url="/manifest.webmanifest"
       name="Period Tracker"
       description="Track your cycle and gain insights into your health."
-      icon="src/assets/icons/512.png"/>
+      icon="/assets/icons/512.png"/>
 
   <div id="app" class="h-screen flex overflow-hidden">
 

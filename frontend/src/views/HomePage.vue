@@ -84,7 +84,7 @@
         <h2 class="text-3xl lg:text-4xl font-semibold text-gray-800 mb-4">{{ $t('homepage.peek.title') }}</h2>
         <p class="text-lg text-gray-600 mb-12 max-w-2xl mx-auto">{{ $t('homepage.peek.subtitle') }}</p>
         <div class="max-w-4xl mx-auto bg-gray-100 p-6 rounded-lg shadow-xl">
-          <img src="@/assets/screenshots/dashboard.png" alt="App dashboard mockup" class="rounded-md">
+          <img src="/assets/screenshots/dashboard.png" alt="App dashboard mockup" class="rounded-md">
         </div>
       </div>
     </section>
@@ -103,7 +103,6 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
 import Navbar from "@/components/Navbar.vue";
 </script>
 
