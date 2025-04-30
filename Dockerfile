@@ -42,9 +42,6 @@ FROM ghcr.io/astral-sh/uv:python3.12-alpine as runner
 # Install necessary runtime system dependencies in Alpine:
 # libpq is needed at runtime to connect to PostgreSQL (Alpine package name for the client library)
 # ca-certificates for SSL connections
-# NO gcompat needed because the VENV will be MUSL-based, matching the base image
-RUN apk update && apk upgrade
-RUN apk add --no-cache ca-certificates
 
 # Set the final application work directory
 WORKDIR /app
