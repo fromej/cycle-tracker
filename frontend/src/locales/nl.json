@@ -232,6 +232,7 @@
   "periodList": {
     "duration": "Duur:",
     "delete": "Verwijderen",
+    "ongoing": "nu",
     "noPeriods": "Nog geen menstruaties vastgelegd."
   },
   "confirmationModal": {

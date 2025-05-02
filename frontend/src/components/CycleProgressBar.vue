@@ -139,6 +139,7 @@ const progressPercentDisplay = computed(() => store.cycleContext?.progress_perce
 
         <span>{{ t('cycleProgressBar.labels.end', {number: cycleLengthDisplay})}}</span>
       </div>
+
     </div>
   </div>
 </template>

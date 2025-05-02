@@ -90,7 +90,7 @@ const changeLanguage = (lang: string) => {
   if (locale.value !== lang) {
     locale.value = lang;
     // Optional: Persist preference (e.g., localStorage)
-    // localStorage.setItem('user-locale', lang);
+    localStorage.setItem('user-locale', lang);
   }
   closeDropdown();
 };

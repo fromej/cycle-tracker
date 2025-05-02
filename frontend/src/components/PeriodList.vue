@@ -8,7 +8,7 @@
       >
         <div>
           <p class="font-semibold text-text">
-            {{ period.start_date }} - {{ period.end_date || 'Ongoing' }}
+            {{ period.start_date }} - {{ period.end_date || $t('periodList.ongoing') }}
           </p>
           <p v-if="period.duration !== null" class="text-sm text-gray-600">
             {{ $t('periodList.duration') }} {{ $t('common.dayN', period.duration) }}

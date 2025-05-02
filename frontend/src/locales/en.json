@@ -232,6 +232,7 @@
   "periodList": {
     "duration": "Duration:",
     "delete": "Delete",
+    "ongoing": "now",
     "noPeriods": "No periods recorded yet."
   },
   "confirmationModal": {

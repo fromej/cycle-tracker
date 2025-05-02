@@ -2,8 +2,10 @@
   <div class="container mx-auto px-4 py-8">
     <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md space-y-8">
 
-      <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">{{ $t('accountPage.title') }}</h2>
-
+      <header class="bg-primary text-white p-4 rounded-lg flex justify-between">
+        <h2 class="text-3xl font-bold">{{ $t('accountPage.title') }}</h2>
+        <LanguagePicker/>
+      </header>
       <section aria-labelledby="user-info-heading">
         <h3 id="user-info-heading" class="text-xl font-semibold text-gray-700 border-b pb-2 mb-4">{{ $t('accountPage.userInfo.title') }}</h3>
         <div v-if="authStore.loading && !authStore.user" class="text-center text-gray-500">
@@ -22,7 +24,6 @@
             <span class="font-medium text-gray-600">{{ $t('accountPage.userInfo.memberSince') }}</span>
             <span class="ml-2 text-gray-800">{{ formattedJoinDate }}</span>
           </div>
-          <LanguagePicker/>
         </div>
         <div v-else class="text-center text-red-500">
           {{ $t('accountPage.userInfo.error') }}
