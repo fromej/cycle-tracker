@@ -71,7 +71,7 @@ ingress:
   tls:
     - secretName: wildcard-periodtracker-tls
       hosts:
-        - period.fromej.nl
+        - periodtracker.nl
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
