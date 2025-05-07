@@ -60,7 +60,7 @@
         </div>
         <div class="flex flex-col md:flex-row items-center gap-8 lg:gap-16 mb-12 lg:mb-16">
           <div class="w-full md:w-1/2">
-            <img src="https://placehold.co/500x300/E9D5FF/8B5CF6?text=Illustration+1" alt="Visual representing planning" class="rounded-lg shadow-lg mx-auto">
+            <img src="/assets/screenshots/planning.png" alt="Visual representing planning" class="rounded-lg shadow-lg mx-auto">
           </div>
           <div class="w-full md:w-1/2 text-center md:text-left">
             <h3 class="text-2xl font-semibold text-gray-800 mb-3">{{ $t('homepage.benefits.items.plan.title') }}</h3>
@@ -69,7 +69,7 @@
         </div>
         <div class="flex flex-col md:flex-row-reverse items-center gap-8 lg:gap-16">
           <div class="w-full md:w-1/2">
-            <img src="https://placehold.co/500x300/FECACA/F43F5E?text=Illustration+2" alt="Visual representing wellness" class="rounded-lg shadow-lg mx-auto">
+            <img src="/assets/screenshots/wellbeing.png" alt="Visual representing wellness" class="rounded-lg shadow-lg mx-auto">
           </div>
           <div class="w-full md:w-1/2 text-center md:text-left">
             <h3 class="text-2xl font-semibold text-gray-800 mb-3">{{ $t('homepage.benefits.items.wellbeing.title') }}</h3>
