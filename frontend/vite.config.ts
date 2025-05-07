@@ -29,7 +29,7 @@ export default defineConfig({
                 description: 'Track your menstrual cycle',
                 start_url: "/",
                 theme_color: '#fbcfe8', // Light Pink
-                background_color: '#ffffff',
+                background_color: '#ff69b4',
                 display: 'standalone',
                 icons: [
                     {
