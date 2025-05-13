@@ -5,9 +5,13 @@ import { VitePWA } from 'vite-plugin-pwa'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
+import vueDevTools from 'vite-plugin-vue-devtools'
 
 export default defineConfig({
     plugins: [
+        vueDevTools({
+            launchEditor: 'webstorm',
+        }),
         vue({
             template: {
                 compilerOptions: {
@@ -24,6 +28,7 @@ export default defineConfig({
         VitePWA({
             registerType: 'autoUpdate',
             manifest: {
+                id: 'period_tracker',
                 name: 'Period Tracker',
                 short_name: 'Period Tracker',
                 description: 'Track your menstrual cycle',
@@ -31,21 +36,39 @@ export default defineConfig({
                 theme_color: '#fbcfe8', // Light Pink
                 background_color: '#ff69b4',
                 display: 'standalone',
+                launch_handler: {
+                    "client_mode": "auto"
+                },
+                orientation: 'any',
+                categories: ['health'],
+                dir: 'ltr',
+                shortcuts: [
+                    {
+                        "name": "Dashboard",
+                        "url": "/dashboard",
+                        "description": "Show my dashboard.",
+                    },
+                    {
+                        "name": "Account",
+                        "url": "/account",
+                        "description": "Manage you account."
+                    }
+                ],
                 icons: [
                     {
-                        src: "assets/icons/512.png",
+                        src: "assets/icons/ios/512.png",
                         type: "image/png",
                         purpose: "any",
                         sizes: "512x512"
                     },
                     {
-                        src: "assets/icons/192.png",
+                        src: "assets/icons/ios/192.png",
                         type: "image/png",
                         purpose: "any",
                         sizes: "192x192"
                     },
                     {
-                        src: "assets/icons/180.png",
+                        src: "assets/icons/ios/180.png",
                         type: "image/png",
                         purpose: "any",
                         sizes: "180x180"
@@ -250,6 +273,20 @@ export default defineConfig({
                         type: "image/png",
                         form_factor: "narrow",
                         label: "Mobile"
+                    },
+                    {
+                        src: "/assets/screenshots/dashboard.png",
+                        sizes: "1440x900",
+                        type: "image/png",
+                        form_factor: "wide",
+                        label: "Mobile"
+                    },
+                    {
+                        src: "/assets/screenshots/mobile-dashboard.png",
+                        sizes: "375x667",
+                        type: "image/png",
+                        form_factor: "narrow",
+                        label: "Desktop"
                     },
                     {
                         src: "/assets/screenshots/dashboard.png",
