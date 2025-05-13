@@ -1,7 +1,20 @@
 import json
+import time
+from datetime import timedelta
+
+from flask import url_for
+from flask_jwt_extended import decode_token
 
 from app.models import User
-from flask import url_for
+
+
+# Helper function (optional, but can make tests cleaner)
+def login_user_and_get_tokens(client, login_identifier, password):
+    response = client.post(
+        url_for("auth.login"),
+        json={"login": login_identifier, "password": password},
+    )
+    return response
 
 
 def test_register_success(client, db):
@@ -90,6 +103,7 @@ def test_login_success_email(client, test_user):
     assert response.status_code == 200
     data = response.get_json()
     assert "access_token" in data
+    assert "refresh_token" in data
 
 
 def test_login_success_username(client, test_user):
@@ -99,7 +113,33 @@ def test_login_success_username(client, test_user):
         json={"login": test_user.username, "password": "password"},
     )
     assert response.status_code == 200
-    assert "access_token" in response.get_json()
+    data = response.get_json()
+    assert "access_token" in data
+    assert "refresh_token" in data
+
+
+def test_refresh_token_success(client, test_user, app):
+    """Test successful token refresh."""
+    # 1. Login to get a refresh token
+    login_response = login_user_and_get_tokens(client, test_user.username, "password")
+    assert login_response.status_code == 200
+    login_data = login_response.get_json()
+    original_access_token = login_data["access_token"]
+    refresh_token = login_data["refresh_token"]
+
+    # 2. Use the refresh token to get a new access token
+    refresh_response = client.post(
+        url_for("auth.refresh"), headers={"Authorization": f"Bearer {refresh_token}"}
+    )
+    assert refresh_response.status_code == 200
+    refresh_data = refresh_response.get_json()
+    assert "access_token" in refresh_data
+    assert (
+        "refresh_token" not in refresh_data
+    )  # Typically, refresh endpoint only returns new access token
+
+    new_access_token = refresh_data["access_token"]
+    assert new_access_token != original_access_token
 
 
 def test_login_wrong_password(client, test_user):
@@ -122,3 +162,91 @@ def test_login_user_not_found(client):
     )
     assert response.status_code == 401
     assert "Invalid credentials" in response.get_json()["detail"]["error"]
+
+
+def test_refresh_with_access_token_fails(client, test_user, app):
+    """Test attempting to refresh using an access token (should fail)."""
+    login_response = login_user_and_get_tokens(client, test_user.username, "password")
+    assert login_response.status_code == 200
+    access_token = login_response.get_json()["access_token"]
+
+    with app.app_context():  # Need app context for decode_token
+        decoded_access_token = decode_token(access_token)
+        assert decoded_access_token["type"] == "access"
+
+    refresh_response = client.post(
+        url_for("auth.refresh"), headers={"Authorization": f"Bearer {access_token}"}
+    )
+
+    assert refresh_response.status_code == 401
+    data = refresh_response.get_json()
+    assert "message" in data
+    assert "Signature verification failed or token is malformed." in data["message"]
+
+
+def test_refresh_with_invalid_token_signature(client):
+    """Test refreshing with a structurally valid but cryptographically invalid token."""
+    invalid_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY3ODg4NjQwMCwianRpIjoiYWJjIiwiZXhwIjoxNjc4ODg3NDAwLCJzdWIiOiIxMjMiLCJ0eXBlIjoicmVmcmVzaCJ9.thisisabadsignature"
+    response = client.post(
+        url_for("auth.refresh"), headers={"Authorization": f"Bearer {invalid_token}"}
+    )
+
+    assert response.status_code == 401
+    data = response.get_json()
+    assert "message" in data
+    assert "Signature verification failed or token is malformed." in data["message"]
+
+
+def test_refresh_with_malformed_token(client):
+    """Test refreshing with a malformed token string."""
+    malformed_token = "this.is.not.a.jwt"
+    response = client.post(
+        url_for("auth.refresh"), headers={"Authorization": f"Bearer {malformed_token}"}
+    )
+
+    assert response.status_code == 401
+    data = response.get_json()
+    assert "message" in data
+    assert "Signature verification failed or token is malformed." in data["message"]
+
+
+def test_refresh_without_token(client):
+    """Test refreshing without providing any token."""
+    response = client.post(url_for("auth.refresh"))
+
+    assert response.status_code == 401
+    data = response.get_json()
+    assert "message" in data
+    assert "Request does not contain an access token." in data["message"]
+
+
+def test_refresh_with_expired_refresh_token(client, test_user, app):
+    """Test refreshing with an expired refresh token."""
+    with app.app_context():
+        original_expiry = app.config.get("JWT_REFRESH_TOKEN_EXPIRES")
+        app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(seconds=1)
+
+        login_response = login_user_and_get_tokens(
+            client, test_user.username, "password"
+        )
+        assert login_response.status_code == 200
+        refresh_token = login_response.get_json()["refresh_token"]
+
+        time.sleep(2)  # Wait for the token to expire
+
+        refresh_response = client.post(
+            url_for("auth.refresh"),
+            headers={"Authorization": f"Bearer {refresh_token}"},
+        )
+        assert refresh_response.status_code == 401
+        data = refresh_response.get_json()
+        assert "message" in data
+        assert "The token has expired." in data["message"]
+
+        # Restore original config if necessary, though app context teardown might handle it
+        if original_expiry is not None:
+            app.config["JWT_REFRESH_TOKEN_EXPIRES"] = original_expiry
+        else:
+            # If it wasn't set before, remove it or set to a default
+            # For testing, it's often better to let fixtures handle app setup/teardown per test.
+            pass

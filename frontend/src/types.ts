@@ -86,7 +86,12 @@ export interface User {
     created_at: string;
 }
 
-export interface Token {
+export interface TokenPair {
+    access_token: string;
+    refresh_token: string;
+}
+
+export interface AccessToken {
     access_token: string;
 }
 
@@ -107,9 +112,10 @@ export interface ValidationError {
 // Auth
 export interface AuthState {
     token: string | null;
-    user: User | null;
+    refreshToken: string | null; // Add refreshToken
+    user: User | null; // Assuming User type is defined
     loading: boolean;
-    error: string | null;
+    error: string | string[] | null; // Allow string array for multiple errors
 }
 
 export interface AuthGetters {
@@ -117,10 +123,15 @@ export interface AuthGetters {
 }
 
 export interface AuthActions {
-    login(credentials: Login): Promise<void>;
-    register(userData: UserRegistration): Promise<void>;
-    logout(): void;
-    initializeAuth(): void;
+    clearError: () => void;
+    changePassword: (data: PasswordChange) => Promise<any>; // Or specific response type
+    deleteAccount: () => Promise<any>; // Or specific response type
+    login: (credentials: Login) => Promise<void>;
+    register: (userData: UserRegistration) => Promise<void>;
+    fetchUser: () => Promise<void>;
+    logout: () => void;
+    initializeAuth: () => void;
+    refreshTokenAction: () => Promise<string | null>; // Add this, returns new access token or null
 }
 
 // Periods Store

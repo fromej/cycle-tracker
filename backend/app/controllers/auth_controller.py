@@ -1,6 +1,8 @@
 from apiflask import APIBlueprint, abort
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from app.schemas import LoginSchema, TokenSchema, UserRegistrationSchema, UserSchema
+from app.schemas.auth import AccessTokenSchema
 from app.services import AuthService
 from app.utils.exceptions import AuthenticationError, RegistrationError, ValidationError
 
@@ -46,12 +48,26 @@ def login(validated_data: dict):
         422: Validation error (from decorator).
     """
     try:
-        access_token = AuthService.login_user(validated_data)
-        return {"access_token": access_token}
+        return AuthService.login_user(validated_data)
     except AuthenticationError as e:
         return abort(e.status_code, message=str(e), detail={"error": str(e)})
     except ValidationError as e:
         return abort(e.status_code, message=str(e), detail={"error": str(e)})
 
 
-# Optional: Add refresh token endpoint if needed
+@auth_bp.route("/refresh", methods=["POST"])
+@jwt_required(refresh=True)
+@auth_bp.output(AccessTokenSchema, status_code=200)
+def refresh():
+    """
+    Refresh an access token.
+    Requires a valid refresh token in the Authorization header (Bearer <refresh_token>).
+    ---
+    Responses:
+        200: Access token refreshed successfully. Returns new access token.
+        401: Missing or invalid refresh token.
+        422: Token is not a refresh token.
+    """
+    current_user_identity = get_jwt_identity()  # Get identity from the refresh token
+    new_access_token = AuthService.refresh_access_token(identity=current_user_identity)
+    return {"access_token": new_access_token}

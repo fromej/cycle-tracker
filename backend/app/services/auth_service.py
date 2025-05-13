@@ -1,6 +1,6 @@
 from typing import Any, Dict, Optional
 
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, create_refresh_token
 
 from app.extensions import db
 from app.models import User
@@ -38,7 +38,7 @@ class AuthService:
             ) from e
 
     @staticmethod
-    def login_user(login_data: Dict[str, Any]) -> str:
+    def login_user(login_data: Dict[str, Any]) -> dict[str, str]:
         """Logs in a user and returns an access token."""
         login_identifier = login_data["login"]  # Can be username or email
         password = login_data["password"]
@@ -48,6 +48,20 @@ class AuthService:
         if user and user.check_password(password):
             # Identity can be user ID or any unique identifier
             access_token = create_access_token(identity=str(user.id))
-            return access_token
+            refresh_token = create_refresh_token(
+                identity=str(user.id)
+            )  # Create refresh token
+            return {"access_token": access_token, "refresh_token": refresh_token}
         else:
             raise AuthenticationError("Invalid credentials.")
+
+    @staticmethod
+    def refresh_access_token(identity: str) -> str:
+        """Generates a new access token for the given identity."""
+        user = UserService.get_user_by_id(int(identity))
+
+        if user:
+            new_access_token = create_access_token(identity=identity)
+            return new_access_token
+        else:
+            raise AuthenticationError("Invalid refresh token.")

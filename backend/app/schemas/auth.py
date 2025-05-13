@@ -32,6 +32,13 @@ class LoginSchema(Schema):
 
 
 class TokenSchema(Schema):
-    """Schema for serializing JWT access tokens."""
+    """Schema for serializing JWT access and refresh tokens."""
+
+    access_token = fields.String(required=True)
+    refresh_token = fields.String(required=True)
+
+
+class AccessTokenSchema(Schema):
+    """Schema for serializing a new JWT access token (typically from refresh)."""
 
     access_token = fields.String(required=True)

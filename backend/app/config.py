@@ -17,6 +17,9 @@ class Config:
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(
         seconds=int(os.environ.get("JWT_ACCESS_TOKEN_EXPIRES", 3600))
     )
+    JWT_REFRESH_TOKEN_EXPIRES = timedelta(
+        days=int(os.environ.get("JWT_ACCESS_TOKEN_EXPIRES", 30))
+    )
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # Define database path (creates 'instance' folder if it doesn't exist)
