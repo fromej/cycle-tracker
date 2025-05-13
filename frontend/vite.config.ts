@@ -47,11 +47,25 @@ export default defineConfig({
                         "name": "Dashboard",
                         "url": "/dashboard",
                         "description": "Show my dashboard.",
+                        "icons": [
+                            {
+                                "src": "assets/icons/home.svg",
+                                "type": "image/svg+xml",
+                                "purpose": "any"
+                            }
+                        ]
                     },
                     {
                         "name": "Account",
                         "url": "/account",
-                        "description": "Manage you account."
+                        "description": "Manage you account.",
+                        "icons": [
+                            {
+                                "src": "assets/icons/userCircle.svg",
+                                "type": "image/svg+xml",
+                                "purpose": "any"
+                            }
+                        ]
                     }
                 ],
                 icons: [
@@ -278,14 +292,14 @@ export default defineConfig({
                         src: "/assets/screenshots/dashboard.png",
                         sizes: "1440x900",
                         type: "image/png",
-                        form_factor: "wide",
+                        form_factor: "narrow",
                         label: "Mobile"
                     },
                     {
                         src: "/assets/screenshots/mobile-dashboard.png",
                         sizes: "375x667",
                         type: "image/png",
-                        form_factor: "narrow",
+                        form_factor: "wide",
                         label: "Desktop"
                     },
                     {

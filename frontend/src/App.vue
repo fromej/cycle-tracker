@@ -4,8 +4,7 @@
       manifest-url="/manifest.webmanifest"
       name="Period Tracker"
       description="Track your cycle and gain insights into your health."
-      icon="/assets/icons/512.png"/>
-
+      icon="/assets/icons/ios/512.png"/>
   <div id="app" class="h-screen flex overflow-hidden">
 
     <Navigation

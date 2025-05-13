@@ -74,7 +74,6 @@ import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import {
   HomeIcon,
-  CalendarDaysIcon as CalendarIcon,
   UserCircleIcon,
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
