@@ -2,7 +2,7 @@
   <nav class="bg-primary text-white p-4 shadow-md">
     <div class="container mx-auto flex justify-between items-center">
       <router-link :to="{ name: 'home' }" class="text-l flex gap-2 items-center font-bold">
-        <img src="/assets/icons/180.png" alt="Period Tracker" class="nav-image">
+        <img src="/assets/icons/180_tp.png" alt="Period Tracker" class="nav-image">
         {{ $t('common.title')}}
       </router-link>
       <div class="flex items-center gap-2">

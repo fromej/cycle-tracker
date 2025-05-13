@@ -9,7 +9,7 @@
       <div class="flex-shrink-0 flex items-center h-16 border-b border-gray-100 px-4" :class="[sidebarOpen ? 'justify-between' : 'justify-center']">
          <span v-if="sidebarOpen">
           <router-link :to="{ name: 'dashboard' }" class="text-l flex gap-2 items-center font-bold text-primary">
-            <img src="/assets/icons/180.png" alt="Period Tracker" class="nav-image">
+            <img src="/assets/icons/180_tp.png" alt="Period Tracker" class="nav-image">
             {{ $t('common.title')}}
           </router-link>
          </span>
