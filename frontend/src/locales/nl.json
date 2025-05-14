@@ -11,7 +11,11 @@
     "dates": {
       "invalid": "Ongeldige datum",
       "error": "Fout"
-    }
+    },
+    "edit": "Bewerken",
+    "save": "Opslaan",
+    "saved": "Opgeslagen",
+    "cancel": "Ongedaan maken"
   },
   "homepage": {
     "hero": {
@@ -168,13 +172,13 @@
     "recordNew": {
       "title": "Nieuwe menstruatie starten",
       "startDateLabel": "Startdatum:",
-      "button": "Start menstruatie"
+      "button": "Mijn menstruatie is gestart"
     },
     "endCurrent": {
       "title": "Huidige menstruatie beëindigen",
       "startedOnPrefix": "Huidige menstruatie gestart op:",
       "endDateLabel": "Einddatum:",
-      "button": "Einde vastleggen"
+      "button": "Mijn menstruatie is afgelopen"
     },
     "errors": {
       "endDateBeforeStart": "Einddatum kan niet voor de startdatum liggen."
@@ -185,17 +189,20 @@
     "statusLabels": {
       "ovulation": "Ovulatiedag",
       "fertile": "Vruchtbare periode",
-      "low": "Lage vruchtbaarheid"
+      "low": "Lage vruchtbaarheid",
+      "unknown": "Onbekend"
     },
     "statusText": {
       "ovulation": "Op basis van je gegevens lijkt vandaag je voorspelde {emphasis} te zijn.",
       "fertile": "Je bent waarschijnlijk nu in je {emphasis}.",
-      "low": "Momenteel voorspeld {emphasis} je vruchtbare periode te zijn."
+      "low": "Momenteel voorspeld {emphasis} je vruchtbare periode te zijn.",
+      "unknown": "Leg minimaal twee menstruaties vast om een schatting van je vruchtbare periode te krijgen."
     },
     "statusEmphasis": {
       "ovulation": "ovulatiedag",
       "fertile": "vruchtbare periode",
-      "low": "buiten"
+      "low": "buiten",
+      "unknown": ""
     },
     "dateLabels": {
       "fertileWindow": "Voorspelde vruchtbare dagen:",

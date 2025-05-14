@@ -25,6 +25,14 @@ class BaseModel(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    def update(self: T, **kwargs) -> T:
+        """Update the current instance in the database"""
+        for key, value in kwargs.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        db.session.commit()
+        return self
+
     @classmethod
     def get_by_id(cls: type[T], record_id: int) -> T | None:
         """Gets a record by its primary key."""

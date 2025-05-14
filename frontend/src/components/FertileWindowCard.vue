@@ -26,9 +26,14 @@
             <b>{{ $t('fertileWindowCard.statusEmphasis.fertile') }}</b>
           </template>
         </i18n-t>
-        <i18n-t keypath="fertileWindowCard.statusText.low" tag="p" v-else>
+        <i18n-t keypath="fertileWindowCard.statusText.low" tag="p" v-else-if="fertileStart">
           <template #emphasis>
             <b>{{ $t('fertileWindowCard.statusEmphasis.low') }}</b>
+          </template>
+        </i18n-t>
+        <i18n-t keypath="fertileWindowCard.statusText.unknown" tag="p" v-else>
+          <template #emphasis>
+            <b>{{ $t('fertileWindowCard.statusEmphasis.unknown') }}</b>
           </template>
         </i18n-t>
       </div>
@@ -50,7 +55,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { format, parseISO, isValid } from 'date-fns';
-import { SparklesIcon, SunIcon, CheckCircleIcon } from '@heroicons/vue/24/outline';
+import { SparklesIcon, SunIcon, CheckCircleIcon, InformationCircleIcon } from '@heroicons/vue/24/outline';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -85,22 +90,30 @@ const statusInfo = computed(() => {
   if (props.isTodayOvulation) {
     return {
       label: t('fertileWindowCard.statusLabels.ovulation'),
-      icon: SparklesIcon, // Or FireIcon, StarIcon
-      iconColorClass: 'text-purple-600', // Use a distinct color for ovulation
+      icon: SparklesIcon,
+      iconColorClass: 'text-purple-600',
       badgeClass: 'bg-purple-100 text-purple-700 ring-1 ring-inset ring-purple-200',
     };
   }
   if (props.isInFertileWindow) {
     return {
       label: t('fertileWindowCard.statusLabels.fertile'),
-      icon: SunIcon, // Or CalendarDaysIcon
-      iconColorClass: 'text-primary', // Use primary theme color
-      badgeClass: 'bg-primary-100 text-primary-700 ring-1 ring-inset ring-primary-200', // Assumes primary-100, primary-700, primary-200 exist
+      icon: SunIcon,
+      iconColorClass: 'text-primary',
+      badgeClass: 'bg-primary-100 text-primary-700 ring-1 ring-inset ring-primary-200',
+    };
+  }
+  if (props.fertileStart && props.fertileEnd && props.ovulationDate) {
+    return {
+      label: t('fertileWindowCard.statusLabels.low'),
+          icon: CheckCircleIcon,
+        iconColorClass: 'text-gray-500',
+        badgeClass: 'bg-gray-100 text-gray-700 ring-1 ring-inset ring-gray-200',
     };
   }
   return {
-    label: t('fertileWindowCard.statusLabels.low'), // Changed from "Not Fertile" for softer language
-    icon: CheckCircleIcon, // Or ShieldCheckIcon
+    label: t('fertileWindowCard.statusLabels.unknown'),
+    icon: InformationCircleIcon,
     iconColorClass: 'text-gray-500',
     badgeClass: 'bg-gray-100 text-gray-700 ring-1 ring-inset ring-gray-200',
   };

@@ -13,6 +13,10 @@ class UsersApi {
         return apiClient.post(`${BASE_URL}/me/change-password`, data);
     }
 
+    static updateOwnUser(data: User): Promise<AxiosResponse<User>> {
+        return apiClient.patch(`${BASE_URL}/me`, data);
+    }
+
     static deleteOwnUser(): Promise<AxiosResponse> {
         return apiClient.delete(`${BASE_URL}/me`);
     }

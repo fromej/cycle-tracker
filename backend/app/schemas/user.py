@@ -12,6 +12,13 @@ class UserSchema(Schema):
     created_at = fields.DateTime(dump_only=True)
 
 
+class UserUpdateSchema(Schema):
+    """Schema for serializing User update data"""
+
+    username = fields.String(validate=validate.Length(min=3, max=80))
+    email = fields.Email(validate=validate.Length(max=120))
+
+
 class ChangePasswordSchema(Schema):
     """Schema for changing password."""
 

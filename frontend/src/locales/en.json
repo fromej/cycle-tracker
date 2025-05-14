@@ -11,7 +11,11 @@
     "dates": {
       "invalid": "Invalid date",
       "error": "Error"
-    }
+    },
+    "edit": "Edit",
+    "save": "Save",
+    "saved": "Saved",
+    "cancel": "Cancel"
   },
   "homepage": {
     "hero": {
@@ -168,13 +172,13 @@
     "recordNew": {
       "title": "Record new Period",
       "startDateLabel": "Start date:",
-      "button": "Record start"
+      "button": "My period started"
     },
     "endCurrent": {
       "title": "End current period",
       "startedOnPrefix": "Current period started on:",
       "endDateLabel": "End date:",
-      "button": "Record end"
+      "button": "My period ended"
     },
     "errors": {
       "endDateBeforeStart": "End date cannot be before the start date."
@@ -185,17 +189,20 @@
     "statusLabels": {
       "ovulation": "Ovulation day",
       "fertile": "Fertile window",
-      "low": "Low fertility"
+      "low": "Low fertility",
+      "unknown": "Unknown"
     },
     "statusText": {
       "ovulation": "Based on your data, today looks like your predicted {emphasis}.",
       "fertile": "You're likely in your {emphasis} right now.",
-      "low": "Currently predicted to be {emphasis} your fertile window."
+      "low": "Currently predicted to be {emphasis} your fertile window.",
+      "unknown": "Please record at least two periods to get an indication of your fertile window."
     },
     "statusEmphasis": {
       "ovulation": "ovulation day",
       "fertile": "fertile window",
-      "low": "outside"
+      "low": "outside",
+      "unknown": ""
     },
     "dateLabels": {
       "fertileWindow": "Predicted fertile days:",

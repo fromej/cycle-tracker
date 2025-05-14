@@ -30,6 +30,11 @@ class UserService:
         return user
 
     @staticmethod
+    def update_user(user: User, data: dict) -> User:
+        """Update a user"""
+        return user.update(**data)
+
+    @staticmethod
     def update_password(user: User, new_password: str) -> None:
         """Updates a user's password."""
         user.set_password(new_password)

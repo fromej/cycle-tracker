@@ -6,19 +6,75 @@
         <h2 class="text-3xl font-bold">{{ $t('accountPage.title') }}</h2>
         <LanguagePicker/>
       </header>
+      <!-- User Info Section with Inline Edit -->
       <section aria-labelledby="user-info-heading">
         <h3 id="user-info-heading" class="text-xl font-semibold text-gray-700 border-b pb-2 mb-4">{{ $t('accountPage.userInfo.title') }}</h3>
         <div v-if="authStore.loading && !authStore.user" class="text-center text-gray-500">
           {{ $t('accountPage.userInfo.loading') }}
         </div>
         <div v-else-if="authStore.user" class="space-y-3">
+          <!-- Username Inline Edit -->
           <div>
             <span class="font-medium text-gray-600">{{ $t('accountPage.userInfo.username') }}</span>
-            <span class="ml-2 text-gray-800">{{ authStore.user.username || $t('common.notAvailable') }}</span>
+            <span v-if="!editState.username">
+  <span class="ml-2 text-gray-800">{{ authStore.user.username || $t('common.notAvailable') }}</span>
+  <button @click="editState.username = true; editForm.username = authStore.user.username"
+          class="ml-2 text-blue-600 hover:text-blue-800">
+    <PencilSquareIcon class="h-4 w-4 inline"/>
+  </button>
+</span>
+            <span v-else>
+  <input
+      v-model="editForm.username"
+      class="ml-2 border rounded px-2 py-0.5 text-gray-800"
+      :disabled="editLoading"
+  />
+  <button @click="saveField('username')" :disabled="editLoading || !editForm.username"
+          class="ml-2 text-green-600 hover:text-green-800">
+    <CheckIcon class="h-4 w-4 inline"/>
+  </button>
+  <button @click="cancelEdit('username')" :disabled="editLoading"
+          class="ml-1 text-gray-500 hover:text-gray-700">
+    <XMarkIcon class="h-4 w-4 inline"/>
+  </button>
+  <span v-if="editLoading" class="ml-2 text-xs text-gray-400">...</span>
+  <span v-if="editError.username" class="ml-2 text-xs text-red-500">{{ editError.username }}</span>
+  <span v-else-if="editSuccess.username" class="ml-2 text-xs text-green-600">
+    <CheckCircleIcon class="h-4 w-4 inline"/>
+  </span>
+</span>
           </div>
+          <!-- Email Inline Edit -->
           <div>
             <span class="font-medium text-gray-600">{{ $t('accountPage.userInfo.email') }}</span>
-            <span class="ml-2 text-gray-800">{{ authStore.user.email || $t('common.notAvailable') }}</span>
+            <span v-if="!editState.email">
+  <span class="ml-2 text-gray-800">{{ authStore.user.email || $t('common.notAvailable') }}</span>
+  <button @click="editState.email = true; editForm.email = authStore.user.email"
+          class="ml-2 text-blue-600 hover:text-blue-800">
+    <PencilSquareIcon class="h-4 w-4 inline"/>
+  </button>
+</span>
+            <span v-else>
+  <input
+      v-model="editForm.email"
+      type="email"
+      class="ml-2 border rounded px-2 py-0.5 text-gray-800"
+      :disabled="editLoading"
+  />
+  <button @click="saveField('email')" :disabled="editLoading || !editForm.email"
+          class="ml-2 text-green-600 hover:text-green-800">
+    <CheckIcon class="h-4 w-4 inline"/>
+  </button>
+  <button @click="cancelEdit('email')" :disabled="editLoading"
+          class="ml-1 text-gray-500 hover:text-gray-700">
+    <XMarkIcon class="h-4 w-4 inline"/>
+  </button>
+  <span v-if="editLoading" class="ml-2 text-xs text-gray-400">...</span>
+  <span v-if="editError.email" class="ml-2 text-xs text-red-500">{{ editError.email }}</span>
+  <span v-else-if="editSuccess.email" class="ml-2 text-xs text-green-600">
+    <CheckCircleIcon class="h-4 w-4 inline"/>
+  </span>
+</span>
           </div>
           <div>
             <span class="font-medium text-gray-600">{{ $t('accountPage.userInfo.memberSince') }}</span>
@@ -31,7 +87,8 @@
       </section>
 
       <section aria-labelledby="change-password-heading">
-        <h3 id="change-password-heading" class="text-xl font-semibold text-gray-700 border-b pb-2 mb-4">{{ $t('accountPage.changePassword.title') }}</h3>
+        <h3 id="change-password-heading" class="text-xl font-semibold text-gray-700 border-b pb-2 mb-4">
+          {{ $t('accountPage.changePassword.title') }}</h3>
         <form @submit.prevent="handleChangePassword" class="space-y-4">
           <div>
             <label for="currentPassword" class="block text-gray-700 text-sm font-bold mb-2">{{ $t('accountPage.changePassword.currentPasswordLabel') }}</label>
@@ -121,10 +178,12 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue';
-import { useAuthStore } from '@/stores/auth'; // Assuming your store path
+import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import LanguagePicker from "@/components/LanguagePicker.vue";
+import UserApi from '@/api/users.ts';
+import { CheckIcon, CheckCircleIcon, XMarkIcon, PencilSquareIcon } from '@heroicons/vue/24/outline';
 
 
 interface PasswordData {
@@ -135,6 +194,45 @@ interface PasswordData {
 
 const authStore = useAuthStore();
 const router = useRouter();
+
+const editState = reactive({ username: false, email: false });
+const editForm = reactive({ username: '', email: '' });
+const editLoading = ref(false);
+const editError = reactive<{ username?: string; email?: string }>({});
+const editSuccess = reactive<{ username?: boolean; email?: boolean }>({});
+
+function cancelEdit(field: 'username' | 'email') {
+  editState[field] = false;
+  editError[field] = '';
+  editSuccess[field] = false;
+}
+
+async function saveField(field: 'username' | 'email') {
+  editLoading.value = true;
+  editError[field] = '';
+  editSuccess[field] = false;
+  try {
+    const payload: Record<string, string> = {};
+    payload[field] = editForm[field];
+
+    await UserApi.updateOwnUser(payload);
+
+    // Update local store immediately if needed
+    if (authStore.user) {
+      authStore.user = { ...authStore.user, ...payload };
+    }
+
+    editSuccess[field] = true;
+    setTimeout(() => editSuccess[field] = false, 1500);
+
+    editState[field] = false;
+  } catch (e: any) {
+    editError[field] = e?.response?.data?.message || 'Could not update, please try again.';
+  } finally {
+    editLoading.value = false;
+  }
+}
+
 
 // --- State ---
 const passwordData = reactive<PasswordData>({
@@ -212,14 +310,6 @@ const handleLogout = async () => {
     if (!authStore.error) {
       authStore.setError('Logout failed. Please try again.');
     }
-  }
-};
-
-// Confirm Account Deletion
-const confirmDeleteAccount = () => {
-  // Use a more robust confirmation modal in a real app
-  if (window.confirm('Are you absolutely sure you want to delete your account? This action is irreversible!')) {
-    handleDeleteAccount();
   }
 };
 

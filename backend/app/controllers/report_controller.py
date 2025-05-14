@@ -1,6 +1,7 @@
 from apiflask import APIBlueprint
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
+from app.models import User
 from app.schemas import CycleStatsSchema, PeriodStatsSchema
 from app.schemas.report import (
     CycleContextSchema,
@@ -87,3 +88,8 @@ def get_cycle_context():
     if not context:
         return {}  # Empty object if no periods exist yet
     return context
+
+
+@report_bp.route("/general", methods=["GET"])
+def get_app_stats():
+    return {"number_of_users": User.query.count()}

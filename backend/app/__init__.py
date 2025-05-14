@@ -25,7 +25,8 @@ def create_app(config_name: Optional[str] = None) -> APIFlask:
         APIFlask: The configured APIFlask application instance.
     """
     app = APIFlask(
-        __name__,
+        "period_tracker",
+        title="Period Tracker",
         instance_relative_config=True,
         static_folder="static",
         static_url_path="/static",
