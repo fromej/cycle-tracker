@@ -15,7 +15,9 @@
     "edit": "Edit",
     "save": "Save",
     "saved": "Saved",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "allRightsReserved": "All rights reserved.",
+    "openSource": "This project is open source"
   },
   "homepage": {
     "hero": {
@@ -64,7 +66,7 @@
     },
     "cta": {
       "title": "Ready to discover your rhythm?",
-      "subtitle": "Join thousands of women taking control of their cycle health. It's free!",
+      "subtitle": "Join the women taking control of their cycle health. It's free!",
       "buttons": {
         "register": "Sign up now",
         "dashboard": "View your dashboard"

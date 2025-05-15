@@ -49,9 +49,9 @@ export default defineConfig({
                         "description": "Show my dashboard.",
                         "icons": [
                             {
-                                "src": "assets/icons/home.svg",
-                                "type": "image/svg+xml",
-                                "purpose": "any"
+                                "src": "assets/icons/home.png",
+                                "type": "image/png",
+                                "purpose": "maskable"
                             }
                         ]
                     },
@@ -61,9 +61,9 @@ export default defineConfig({
                         "description": "Manage you account.",
                         "icons": [
                             {
-                                "src": "assets/icons/userCircle.svg",
-                                "type": "image/svg+xml",
-                                "purpose": "any"
+                                "src": "assets/icons/userCircle.png",
+                                "type": "image/png",
+                                "purpose": "maskable"
                             }
                         ]
                     }

@@ -15,7 +15,9 @@
     "edit": "Bewerken",
     "save": "Opslaan",
     "saved": "Opgeslagen",
-    "cancel": "Ongedaan maken"
+    "cancel": "Ongedaan maken",
+    "allRightsReserved": "Alle rechten voorbehouden.",
+    "openSource": "Dit project is open source"
   },
   "homepage": {
     "hero": {
